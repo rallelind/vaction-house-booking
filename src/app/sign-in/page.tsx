@@ -1,6 +1,15 @@
+"use client"
 import Image from "next/image";
 
 export default function SignIn() {
+
+    const handleGoogleLogin = async () => {
+        await fetch("http://localhost:3000/auth/google", {
+            method: "GET",
+            mode: "no-cors"
+        })
+    }
+
   return (
     <main className="flex h-screen">
       <div className="lg:w-1/2 p-5 flex items-center">
@@ -15,9 +24,10 @@ export default function SignIn() {
           <button
             type="button"
             className="text-white w-full mt-10  bg-black hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between"
+            onClick={handleGoogleLogin}
           >
             <svg
-              class="mr-2 -ml-1 w-4 h-4"
+              className="mr-2 -ml-1 w-4 h-4"
               aria-hidden="true"
               focusable="false"
               data-prefix="fab"
