@@ -6,12 +6,11 @@ export default function SignIn() {
     const handleGoogleLogin = async () => {
         await fetch("http://localhost:3000/auth/google", {
             method: "GET",
-            mode: "no-cors"
         })
     }
 
   return (
-    <main className="flex h-screen">
+    <main className="flex h-screen bg-orange-100">
       <div className="lg:w-1/2 p-5 flex items-center">
         <div className="p-5">
           <h1 className="text-4xl font-bold mb-5 text-center">
