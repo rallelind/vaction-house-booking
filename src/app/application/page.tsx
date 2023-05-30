@@ -2,6 +2,6 @@
 
 export default function Application() {
     return (
-        <section></section>
+        <main><p>hello world</p></main>
     )
 }
