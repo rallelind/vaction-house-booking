@@ -113,8 +113,22 @@ export default function Calendar() {
                   <div
                     key={day.toString()}
                     className={classNames(
-                      dayIdx === 0 && colStartClasses[getDay(day)],
-                      'py-1.5'
+                      isWithinInterval(day, { start: startDate, end: endDate }) && 'bg-orange-100',
+                      !isWithinInterval(day, { start: startDate, end: endDate }) &&
+                        !isEqual(day, startDate) &&
+                        !isEqual(day, endDate) &&
+                        isSameMonth(day, firstDayCurrentMonth) &&
+                        'text-gray-900',
+                      !isWithinInterval(day, { start: startDate, end: endDate }) &&
+                        !isEqual(day, startDate) &&
+                        !isEqual(day, endDate) &&
+                        !isSameMonth(day, firstDayCurrentMonth) &&
+                        'text-gray-400',
+                      isEqual(day, startDate) && isEqual(day, endDate) && !isToday(day) && 'bg-gray-900',
+                      isEqual(day, startDate) && !isEqual(day, endDate) && 'rounded-l-full',
+                      isEqual(day, endDate) && !isEqual(day, startDate) && 'rounded-r-full',
+                      isEqual(day, startDate) && isEqual(day, endDate) && 'font-semibold',
+                      'mx-auto flex h-10 items-center justify-center w-full'
                     )}
                   >
                     <button
@@ -124,22 +138,7 @@ export default function Calendar() {
                         isEqual(day, startDate) && isEqual(day, endDate) && 'bg-orange-200 text-white rounded-full',
                         isEqual(day, startDate) && !isEqual(day, endDate) && 'bg-orange-200 text-white rounded-full',
                         isEqual(day, endDate) && !isEqual(day, startDate) && 'bg-orange-200 text-white rounded-full',
-                        isWithinInterval(day, { start: startDate, end: endDate }) && 'bg-orange-100',
-                        !isWithinInterval(day, { start: startDate, end: endDate }) &&
-                          !isEqual(day, startDate) &&
-                          !isEqual(day, endDate) &&
-                          isSameMonth(day, firstDayCurrentMonth) &&
-                          'text-gray-900',
-                        !isWithinInterval(day, { start: startDate, end: endDate }) &&
-                          !isEqual(day, startDate) &&
-                          !isEqual(day, endDate) &&
-                          !isSameMonth(day, firstDayCurrentMonth) &&
-                          'text-gray-400',
-                        isEqual(day, startDate) && isEqual(day, endDate) && !isToday(day) && 'bg-gray-900',
-                        isEqual(day, startDate) && !isEqual(day, endDate) && 'rounded-l-full',
-                        isEqual(day, endDate) && !isEqual(day, startDate) && 'rounded-r-full',
-                        isEqual(day, startDate) && isEqual(day, endDate) && 'font-semibold',
-                        'mx-auto flex h-8 w-8 items-center justify-center'
+                        'w-full h-full hover:border-2 hover:border-black hover:rounded-full'
                       )}
                     >
                       <time dateTime={format(day, 'yyyy-MM-dd')}>
