@@ -1,3 +1,4 @@
+"use client"
 import {
   HomeModernIcon,
   MapIcon,
@@ -7,12 +8,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
 import Link from "next/link";
+import useUser from "@/hooks/useUser";
 
 export default function ApplicationLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+
+  const { user } = useUser()
+  
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
@@ -61,12 +66,12 @@ export default function ApplicationLayout({
             </ul>
             <div className="fixed bottom-4">
               <div className="flex items-center">
-                <div className=" bg-orange-200 p-2 mr-3 rounded-lg">
-                  <UserIcon className="h-6" />
+                <div className="bg-orange-200 mr-3 rounded-lg h-10 w-10 flex items-center justify-center">
+                  {!user?.picture ? <UserIcon className="h-6" /> : <img className="rounded-lg" src={user?.picture} />}
                 </div>
                 <div className="hidden lg:block">
-                  <p>navn</p>
-                  <p>email.test@test.com</p>
+                  <p>{user?.name}</p>
+                  <p>{user?.email}</p>
                 </div>
               </div>
             </div>

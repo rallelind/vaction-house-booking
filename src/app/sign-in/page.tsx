@@ -6,6 +6,7 @@ export default function SignIn() {
     const handleGoogleLogin = async () => {
         await fetch("http://localhost:3000/auth/google", {
             method: "GET",
+            credentials: 'include'
         })
     }
 
