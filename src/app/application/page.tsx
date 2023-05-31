@@ -1,7 +1,9 @@
-
+import Calendar from "@/components/Calendar"
 
 export default function Application() {
     return (
-        <main><p>hello world</p></main>
+        <main>
+            <Calendar />
+        </main>
     )
 }
