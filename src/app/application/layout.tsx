@@ -38,7 +38,7 @@ export default function ApplicationLayout({
               </li>
               <li className="mt-5 mb-5">
                 <Link
-                  href="/application/bookings"
+                  href="/application/trips"
                   className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
                 >
                   <MapIcon className="h-6 lg:mr-3" />
@@ -47,7 +47,7 @@ export default function ApplicationLayout({
               </li>
               <li className="mt-5 mb-5">
                 <Link
-                  href="/application/bookings"
+                  href="/application/availability"
                   className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
                 >
                   <CalendarDaysIcon className="h-6 lg:mr-3" />
@@ -56,7 +56,7 @@ export default function ApplicationLayout({
               </li>
               <li className="mt-5 mb-5">
                 <Link
-                  href="/application/bookings"
+                  href="/application/your-family"
                   className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
                 >
                   <UsersIcon className="h-6 lg:mr-3" />
@@ -67,7 +67,7 @@ export default function ApplicationLayout({
             <div className="fixed bottom-4">
               <div className="flex items-center">
                 <div className="bg-orange-200 mr-3 rounded-lg h-10 w-10 flex items-center justify-center">
-                  {!user?.picture ? <UserIcon className="h-6" /> : <img className="rounded-lg" src={user?.picture} />}
+                  {!user?.picture ? <UserIcon className="h-6" /> : <img alt="avatar" className="rounded-lg" src={user?.picture} />}
                 </div>
                 <div className="hidden lg:block">
                   <p>{user?.name}</p>
