@@ -1,13 +1,21 @@
 "use client"
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function SignIn() {
 
+  const router = useRouter()
+
     const handleGoogleLogin = async () => {
-        await fetch("http://localhost:3000/auth/google", {
+        const response = await fetch("http://localhost:3000/auth/google", {
             method: "GET",
             credentials: 'include'
         })
+
+        if(response.ok) {
+          const result = await response.json()
+          router.push(result);
+        }
     }
 
   return (
