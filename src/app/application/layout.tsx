@@ -71,7 +71,7 @@ export default function ApplicationLayout({
                 </div>
                 <div className="hidden lg:block">
                   <p>{user?.name}</p>
-                  <p>{user?.email}</p>
+                  <p className="text-xs truncate">{user?.email}</p>
                 </div>
               </div>
             </div>
