@@ -1,23 +1,24 @@
-"use client"
+"use client";
 import {
   HomeModernIcon,
   MapIcon,
   CalendarDaysIcon,
   UsersIcon,
   UserIcon,
+  Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
 import Link from "next/link";
 import useUser from "@/hooks/useUser";
+import NavigationItem from "@/components/navigation/NavigationItem";
 
 export default function ApplicationLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const { user } = useUser();
 
-  const { user } = useUser()
-  
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
@@ -27,47 +28,46 @@ export default function ApplicationLayout({
               Havklitvej 60
             </h1>
             <ul>
-              <li className="mt-5 mb-5">
-                <Link
-                  href="/application/bookings"
-                  className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
-                >
-                  <HomeModernIcon className="h-6 lg:mr-3" />
-                  <p className="hidden lg:block">Bookinger</p>
-                </Link>
-              </li>
-              <li className="mt-5 mb-5">
-                <Link
-                  href="/application/trips"
-                  className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
-                >
-                  <MapIcon className="h-6 lg:mr-3" />
-                  <p className="hidden lg:block">Dine ture</p>
-                </Link>
-              </li>
-              <li className="mt-5 mb-5">
-                <Link
-                  href="/application/availability"
-                  className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
-                >
-                  <CalendarDaysIcon className="h-6 lg:mr-3" />
-                  <p className="hidden lg:block">Tjek ledighed</p>
-                </Link>
-              </li>
-              <li className="mt-5 mb-5">
-                <Link
-                  href="/application/your-family"
-                  className="flex items-center hover:bg-orange-100 w-full p-3 rounded-lg"
-                >
-                  <UsersIcon className="h-6 lg:mr-3" />
-                  <p className="hidden lg:block">Tilknyttet familie</p>
-                </Link>
-              </li>
+              {user?.house_admin && (
+                <NavigationItem
+                  href="/application/house/adminstrate"
+                  icon={<Cog6ToothIcon className="h-6 lg:mr-3" />}
+                  text="Adminstrer huset"
+                />
+              )}
+              <NavigationItem
+                href="/application/bookings"
+                icon={<HomeModernIcon className="h-6 lg:mr-3" />}
+                text="Bookinger"
+              />
+              <NavigationItem
+                href="/application/trips"
+                icon={<MapIcon className="h-6 lg:mr-3" />}
+                text="Dine ture"
+              />
+              <NavigationItem
+                href="/application/availability"
+                icon={<CalendarDaysIcon className="h-6 lg:mr-3" />}
+                text="Tjek ledighed"
+              />
+              <NavigationItem
+                href="/application/your-family"
+                icon={<UsersIcon className="h-6 lg:mr-3" />}
+                text="Din familie"
+              />
             </ul>
             <div className="fixed bottom-4">
               <div className="flex items-center">
                 <div className="bg-orange-200 mr-3 rounded-lg h-10 w-10 flex items-center justify-center">
-                  {!user?.picture ? <UserIcon className="h-6" /> : <img alt="avatar" className="rounded-lg" src={user?.picture} />}
+                  {!user?.picture ? (
+                    <UserIcon className="h-6" />
+                  ) : (
+                    <img
+                      alt="avatar"
+                      className="rounded-lg"
+                      src={user?.picture}
+                    />
+                  )}
                 </div>
                 <div className="hidden lg:block">
                   <p>{user?.name}</p>
