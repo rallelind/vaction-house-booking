@@ -113,7 +113,7 @@ export default function Calendar() {
                   <div
                     key={day.toString()}
                     className={classNames(
-                      isWithinInterval(day, { start: startDate, end: endDate }) && 'bg-orange-100',
+                      isWithinInterval(day, { start: startDate, end: endDate }) && !isEqual(endDate, startDate) && 'bg-orange-100',
                       !isWithinInterval(day, { start: startDate, end: endDate }) &&
                         !isEqual(day, startDate) &&
                         !isEqual(day, endDate) &&

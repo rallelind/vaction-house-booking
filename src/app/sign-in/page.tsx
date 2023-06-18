@@ -1,22 +1,21 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function SignIn() {
+  const router = useRouter();
 
-  const router = useRouter()
+  const handleGoogleLogin = async () => {
+    const response = await fetch("http://localhost:3000/auth/google", {
+      method: "GET",
+      credentials: "include",
+    });
 
-    const handleGoogleLogin = async () => {
-        const response = await fetch("http://localhost:3000/auth/google", {
-            method: "GET",
-            credentials: 'include'
-        })
-
-        if(response.ok) {
-          const result = await response.json()
-          router.push(result);
-        }
+    if (response.ok) {
+      const result = await response.json();
+      router.push(result);
     }
+  };
 
   return (
     <main className="flex h-screen bg-orange-100">
