@@ -1,0 +1,60 @@
+"use client";
+import { FC } from "react";
+import { useState, KeyboardEvent } from "react";
+import { XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
+import { MultiSelectInterface } from "../types";
+
+const MultiSelect: FC<MultiSelectInterface> = ({ label }) => {
+  const [items, setItems] = useState<string[]>([]);
+  const [itemToAdd, setItemToAdd] = useState<string>("");
+
+  const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (items.includes(itemToAdd)) {
+      return;
+    }
+
+    if (event.key === "Enter" && event.currentTarget.checkValidity()) {
+      setItems([...items, itemToAdd]);
+      setItemToAdd("");
+    }
+  };
+
+  const removeItem = (item: string) => {
+    setItems((prevItems) => prevItems.filter((prevItem) => prevItem !== item));
+  };
+
+  return (
+    <>
+      <label className="text-md font-medium text-gray-900">{label}</label>
+      <div className="mt-2 p-1 w-[50%] text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900">
+        <div className="max-w-full">
+          {items.map((item) => (
+            <span key={item} className="w-fit inline-block mr-1 h-full">
+              <div className="flex items-center w-fit bg-orange-100 rounded-md pr-1 pl-1">
+                <div className="flex items-center">
+                  <UserIcon className="h-4 mr-2" />
+                  {item}
+                </div>
+                <XMarkIcon
+                  onClick={() => removeItem(item)}
+                  className="h-4 ml-2"
+                  role="button"
+                />
+              </div>
+            </span>
+          ))}
+          <input
+            className="outline-0 bg-transparent p-1"
+            onKeyDown={onKeyDown}
+            value={itemToAdd}
+            placeholder={items.length === 0 ? "Tilføj brugers emails..." : ""}
+            onChange={(e) => setItemToAdd(e.target.value)}
+            type="email"
+          />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default MultiSelect;

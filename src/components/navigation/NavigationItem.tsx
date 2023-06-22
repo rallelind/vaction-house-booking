@@ -1,6 +1,8 @@
+import { FC } from "react";
 import Link from "next/link";
+import { NavigationItemInterface } from "../types";
 
-const NavigationItem = ({ icon, text, href }) => {
+const NavigationItem: FC<NavigationItemInterface> = ({ icon, text, href }) => {
   return (
     <li className="mt-5 mb-5">
       <Link
@@ -14,4 +16,4 @@ const NavigationItem = ({ icon, text, href }) => {
   );
 };
 
-export default NavigationItem
+export default NavigationItem;
