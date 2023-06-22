@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { useState, KeyboardEvent } from "react";
 import { XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { MultiSelectInterface } from "../types";
@@ -7,6 +7,8 @@ import { MultiSelectInterface } from "../types";
 const MultiSelect: FC<MultiSelectInterface> = ({ label }) => {
   const [items, setItems] = useState<string[]>([]);
   const [itemToAdd, setItemToAdd] = useState<string>("");
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (items.includes(itemToAdd)) {
@@ -23,10 +25,16 @@ const MultiSelect: FC<MultiSelectInterface> = ({ label }) => {
     setItems((prevItems) => prevItems.filter((prevItem) => prevItem !== item));
   };
 
+  const handleOuterInputClick = () => {
+    if(inputRef.current) {
+        inputRef.current.focus()
+    }
+  }
+
   return (
     <>
       <label className="text-md font-medium text-gray-900">{label}</label>
-      <div className="mt-2 p-1 w-[50%] text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900">
+      <div onClick={handleOuterInputClick} className="mt-2 p-1 w-[50%] cursor-text text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900">
         <div className="max-w-full">
           {items.map((item) => (
             <span key={item} className="w-fit inline-block mr-1 h-full">
@@ -50,6 +58,7 @@ const MultiSelect: FC<MultiSelectInterface> = ({ label }) => {
             placeholder={items.length === 0 ? "Tilføj brugers emails..." : ""}
             onChange={(e) => setItemToAdd(e.target.value)}
             type="email"
+            ref={inputRef}
           />
         </div>
       </div>
