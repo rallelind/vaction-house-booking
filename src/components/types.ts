@@ -9,3 +9,10 @@ export interface NavigationItemInterface {
 export interface MultiSelectInterface {
   label: string;
 }
+
+export interface ItemSelectInterface {
+    selected: boolean,
+    icon: ReactNode,
+    description: string,
+    title: string,
+}
