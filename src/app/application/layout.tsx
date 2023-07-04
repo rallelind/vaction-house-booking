@@ -11,6 +11,7 @@ import { ReactNode } from "react";
 import Link from "next/link";
 import useUser from "@/hooks/useUser";
 import NavigationItem from "@/components/navigation/NavigationItem";
+import Avatar from "@/components/ui/Avatar";
 
 export default function ApplicationLayout({
   children,
@@ -58,18 +59,8 @@ export default function ApplicationLayout({
             </ul>
             <div className="fixed bottom-4">
               <div className="flex items-center">
-                <div className="bg-orange-200 mr-3 rounded-lg h-10 w-10 flex items-center justify-center">
-                  {!user?.picture ? (
-                    <UserIcon className="h-6" />
-                  ) : (
-                    <img
-                      alt="avatar"
-                      className="rounded-lg"
-                      src={user?.picture}
-                    />
-                  )}
-                </div>
-                <div className="hidden lg:block">
+                <Avatar avatarUrl={user?.picture} />
+                <div className="hidden lg:block ml-3">
                   <p>{user?.name}</p>
                   <p className="text-xs truncate">{user?.email}</p>
                 </div>

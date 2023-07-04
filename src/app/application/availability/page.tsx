@@ -1,4 +1,4 @@
-import Calendar from "@/components/Calendar"
+import Calendar from "@/components/ui/Calendar"
 
 export default function Application() {
     return (
