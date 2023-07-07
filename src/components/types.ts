@@ -8,6 +8,7 @@ export interface NavigationItemInterface {
 
 export interface MultiSelectInterface {
   label: string;
+  description?: string;
 }
 
 export interface ItemSelectInterface {

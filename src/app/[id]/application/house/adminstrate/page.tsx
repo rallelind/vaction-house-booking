@@ -5,27 +5,31 @@ import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
   PencilIcon,
-  PlusIcon,
-  RectangleGroupIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 import Avatar from "@/components/ui/Avatar";
 import AddFamilyModalContent from "@/components/house-adminstrate/add-family-modal-content";
+import ImageUpload from "@/components/house-adminstrate/image-upload";
 
 export default function HouseAdminstration() {
   let [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="w-full p-10">
-      <button className="mb-6 p-2 flex bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200">
-        <RectangleGroupIcon className="h-6 mr-2" />
-        <p>Personaliser log in side</p>
-      </button>
-      <UserInvite label="Admin brugere" />
-      <div className="mt-6"></div>
-      <p className="mb-2 text-md font-medium text-gray-900">Booking type</p>
+      <p className="text-md font-medium text-gray-900">
+        Personaliser login side
+      </p>
+      <p className="font-light mb-4">Ændre billederne der er på log in siden til dette hus</p>
+      <div className="grid grid-flow-col grid-cols-3 mb-6">
+        <ImageUpload />
+        <ImageUpload />
+        <ImageUpload />
+      </div>
+      <UserInvite label="Admin brugere" description="Tilføj admin brugere. Admin brugere kan ændre i alt adminstrativt omkring huset." />
+      <p className="mt-6 text-md font-medium text-gray-900">Booking type</p>
+      <p className="mb-2 font-light">Vælg om bookinger manuelt skal accepteres af en admin eller om de ikke behøver at accepteres</p>
       <div className="flex">
         <ItemSelect
           description="Tillad åben booking, dette betyder at du ikke skal acceptere bookinger"
@@ -44,7 +48,7 @@ export default function HouseAdminstration() {
       <div className="flex justify-between items-center mb-6">
         <div>
           <p className="text-md font-medium text-gray-900">Familier</p>
-          <p>Dette er de familier der er tilføjet til dette hus</p>
+          <p className="font-light">Dette er de familier der er tilføjet til dette hus</p>
         </div>
         <button
           onClick={() => setIsOpen(true)}
@@ -75,7 +79,7 @@ export default function HouseAdminstration() {
         </li>
       </ul>
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+        <div className="fixed inset-0" aria-hidden="true" />
         <div className="fixed inset-0 flex justify-center items-start mt-20">
           <Dialog.Panel className="bg-white p-6 rounded-lg w-[50%]">
             <AddFamilyModalContent onClose={() => setIsOpen(false)} />

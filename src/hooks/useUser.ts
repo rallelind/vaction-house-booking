@@ -1,5 +1,4 @@
 import useSWR from "swr";
-import { useRouter } from "next/navigation";
 
 const fetcher = async (url: string) => {
     const response = await fetch(url, { method: 'GET', credentials: 'include' });
@@ -13,12 +12,6 @@ const fetcher = async (url: string) => {
 
 export default function useUser() {
     const { data, error } = useSWR("http://localhost:3000/users/me", fetcher)
-
-    const router = useRouter();
-
-    if(error) {
-        router.push("/sign-in")
-    }
 
     return {
         user: data,

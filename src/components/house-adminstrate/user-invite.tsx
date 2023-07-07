@@ -4,7 +4,7 @@ import { useState, KeyboardEvent } from "react";
 import { XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { MultiSelectInterface } from "../types";
 
-const UserInvite: FC<MultiSelectInterface> = ({ label }) => {
+const UserInvite: FC<MultiSelectInterface> = ({ label, description }) => {
   const [items, setItems] = useState<string[]>([]);
   const [itemToAdd, setItemToAdd] = useState<string>("");
 
@@ -35,6 +35,7 @@ const UserInvite: FC<MultiSelectInterface> = ({ label }) => {
     <>
       <div>
         <label className="text-md font-medium text-gray-900">{label}</label>
+        {!!description && <p className="font-light">{description}</p>}
         <div
           onClick={handleOuterInputClick}
           className="mt-2 p-1 w-[50%] cursor-text text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900"
