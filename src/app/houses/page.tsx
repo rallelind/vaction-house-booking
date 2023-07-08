@@ -19,7 +19,7 @@ export default function Houses() {
 
   return (
     <div>
-      <div className="grid grid-flow-col auto-cols-auto gap-6">
+      <div className="grid grid-flow-col auto-cols-auto gap-6 justify-center">
         <HouseWrapper>
           <div className="w-full text-center">
             <div className="flex justify-center">
@@ -28,7 +28,7 @@ export default function Houses() {
             <p className="mt-6 font-medium">Tilføj et hus</p>
           </div>
         </HouseWrapper>
-        <div className="h-80 w-80 border rounded-lg border-gray-300 relative">
+        <div className="h-80 w-80 border rounded-lg border-gray-300 relative hover:shadow-md cursor-pointer">
           <img
             className="object-cover h-40 w-full rounded-tl-lg rounded-tr-lg"
             src="/huset.jpg"
