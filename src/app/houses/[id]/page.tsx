@@ -13,6 +13,8 @@ export default function HouseCreation() {
   const autoCompleteServiceRef =
     useRef<null | google.maps.places.AutocompleteService>(null);
 
+  const mapsRef = useRef<null | google.maps.Map>(null);
+
   useEffect(() => {
     autoCompleteServiceRef.current
       ?.getPlacePredictions({ input: inputQuery })
@@ -39,13 +41,14 @@ export default function HouseCreation() {
     loader
       .importLibrary("maps")
       .then(async ({ Map }) => {
-        new Map(document.getElementById("map") as HTMLElement, mapOptions);
+        const map = new Map(document.getElementById("map") as HTMLElement, mapOptions);
 
         const { AutocompleteService } = await loader.importLibrary("places");
 
         let autoCompleteService = new AutocompleteService();
 
         autoCompleteServiceRef.current = autoCompleteService;
+        mapsRef.current = map;
       })
       .catch((e) => {
         // do something
