@@ -6,7 +6,7 @@ import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Avatar from "@/components/ui/Avatar";
 
-const HouseWrapper = ({ children }) => {
+const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="rounded-lg relative border w-80 h-80 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer">
       {children}
