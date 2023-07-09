@@ -15,6 +15,8 @@ export default function HouseCreation() {
 
   const mapsRef = useRef<null | google.maps.Map>(null);
 
+  const placeServiceRef = useRef<null | google.maps.places.PlacesService>(null);
+
   useEffect(() => {
     autoCompleteServiceRef.current
       ?.getPlacePredictions({ input: inputQuery })
@@ -28,7 +30,7 @@ export default function HouseCreation() {
         lat: 0,
         lng: 0,
       },
-      zoom: 10,
+      zoom: 12,
       disableDefaultUI: true,
     };
 
@@ -41,28 +43,66 @@ export default function HouseCreation() {
     loader
       .importLibrary("maps")
       .then(async ({ Map }) => {
-        const map = new Map(document.getElementById("map") as HTMLElement, mapOptions);
+        const map = new Map(
+          document.getElementById("map") as HTMLElement,
+          mapOptions
+        );
 
-        const { AutocompleteService } = await loader.importLibrary("places");
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition((position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
 
-        let autoCompleteService = new AutocompleteService();
+            map.setCenter(pos);
+          });
+        }
+
+        const { AutocompleteService, PlacesService } =
+          await loader.importLibrary("places");
+
+        const autoCompleteService = new AutocompleteService();
+        const placesService = new PlacesService(document.createElement("div"));
 
         autoCompleteServiceRef.current = autoCompleteService;
         mapsRef.current = map;
+        placeServiceRef.current = placesService;
       })
       .catch((e) => {
         // do something
       });
   }, []);
 
-  console.log(predictions);
+  const handleChangeAddress = async (placeId: string) => {
+
+    placeServiceRef.current?.getDetails(
+      { placeId },
+      (placeDetails) => {
+        const location = placeDetails?.geometry?.location;
+
+        if (!location) return;
+
+        const lat = location?.lat();
+        const lng = location?.lng();
+
+        const pos = {
+          lat,
+          lng,
+        };
+
+        mapsRef.current?.setCenter(pos);
+      }
+    );
+
+  };
 
   return (
     <div>
       <div className="relative w-[600px] m-auto">
         <div id="map" className="h-[500px] rounded-lg"></div>
         <div className="absolute top-0 p-6 w-full">
-          <Combobox>
+          <Combobox onChange={handleChangeAddress}>
             {({ open }) => (
               <>
                 <div
@@ -86,6 +126,7 @@ export default function HouseCreation() {
                       className="p-4 flex items-center hover:bg-orange-50"
                       value={prediction.description}
                       key={prediction.place_id}
+                      onClick={() => handleChangeAddress(prediction.place_id)}
                     >
                       <div className="bg-orange-100 rounded-lg p-2 border-orange-200 border">
                         <HomeIcon className="h-6" />
