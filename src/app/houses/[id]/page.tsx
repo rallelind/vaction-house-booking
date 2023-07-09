@@ -19,19 +19,21 @@ export default function HouseCreation() {
 
   useEffect(() => {
     autoCompleteServiceRef.current
-      ?.getPlacePredictions({ input: inputQuery })
+      ?.getPlacePredictions({ input: inputQuery, componentRestrictions: { country: "dk" }, types: ["address"] })
       .then(({ predictions }) => setPredictions(predictions))
       .catch(() => setPredictions([]));
   }, [inputQuery]);
 
   useEffect(() => {
-    const mapOptions = {
+    const mapOptions: google.maps.MapOptions = {
       center: {
         lat: 0,
         lng: 0,
       },
       zoom: 12,
       disableDefaultUI: true,
+      gestureHandling: "none",
+      keyboardShortcuts: false      
     };
 
     const loader = new Loader({
@@ -114,6 +116,7 @@ export default function HouseCreation() {
                     <MapPinIcon className="h-6" />
                   </div>
                   <Combobox.Input
+                    displayValue={!open && "Udfyld addressen..."}
                     className="focus:outline-none w-full ml-4"
                     onChange={(e) => setInputQuery(e.target.value)}
                   />
