@@ -18,8 +18,6 @@ export default function HouseCreation() {
       .catch(() => setPredictions([]));
   }, [inputQuery]);
 
-  console.log(predictions);
-
   useEffect(() => {
     const mapOptions = {
       center: {
