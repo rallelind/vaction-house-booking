@@ -19,7 +19,11 @@ export default function HouseCreation() {
 
   useEffect(() => {
     autoCompleteServiceRef.current
-      ?.getPlacePredictions({ input: inputQuery, componentRestrictions: { country: "dk" }, types: ["address"] })
+      ?.getPlacePredictions({
+        input: inputQuery,
+        componentRestrictions: { country: "dk" },
+        types: ["address"],
+      })
       .then(({ predictions }) => setPredictions(predictions))
       .catch(() => setPredictions([]));
   }, [inputQuery]);
@@ -33,7 +37,7 @@ export default function HouseCreation() {
       zoom: 12,
       disableDefaultUI: true,
       gestureHandling: "none",
-      keyboardShortcuts: false      
+      keyboardShortcuts: false,
     };
 
     const loader = new Loader({
@@ -77,26 +81,21 @@ export default function HouseCreation() {
   }, []);
 
   const handleChangeAddress = async (placeId: string) => {
+    placeServiceRef.current?.getDetails({ placeId }, (placeDetails) => {
+      const location = placeDetails?.geometry?.location;
 
-    placeServiceRef.current?.getDetails(
-      { placeId },
-      (placeDetails) => {
-        const location = placeDetails?.geometry?.location;
+      if (!location) return;
 
-        if (!location) return;
+      const lat = location?.lat();
+      const lng = location?.lng();
 
-        const lat = location?.lat();
-        const lng = location?.lng();
+      const pos = {
+        lat,
+        lng,
+      };
 
-        const pos = {
-          lat,
-          lng,
-        };
-
-        mapsRef.current?.setCenter(pos);
-      }
-    );
-
+      mapsRef.current?.setCenter(pos);
+    });
   };
 
   return (
@@ -116,7 +115,6 @@ export default function HouseCreation() {
                     <MapPinIcon className="h-6" />
                   </div>
                   <Combobox.Input
-                    displayValue={!open && "Udfyld addressen..."}
                     className="focus:outline-none w-full ml-4"
                     onChange={(e) => setInputQuery(e.target.value)}
                   />
