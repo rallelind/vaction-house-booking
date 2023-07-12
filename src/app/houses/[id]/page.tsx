@@ -69,6 +69,8 @@ export default function HouseCreation() {
           });
         }
 
+        const { Marker } = await loader.importLibrary("marker"); 
+
         const { AutocompleteService, PlacesService } =
           await loader.importLibrary("places");
 
