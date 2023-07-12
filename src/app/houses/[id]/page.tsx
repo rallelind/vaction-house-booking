@@ -10,6 +10,10 @@ export default function HouseCreation() {
     [] | google.maps.places.AutocompletePrediction[]
   >([]);
 
+  const [selectedAddress, setSelectedAddress] = useState<
+    boolean | google.maps.places.AutocompletePrediction
+  >(false);
+
   const autoCompleteServiceRef =
     useRef<null | google.maps.places.AutocompleteService>(null);
 
@@ -108,7 +112,7 @@ export default function HouseCreation() {
               <>
                 <div
                   className={`flex ${
-                    !open ? "rounded-lg" : "rounded-t-lg"
+                    !open || predictions.length === 0 ? "rounded-lg" : "rounded-t-lg"
                   } p-4 w-full bg-white cursor-text`}
                 >
                   <div className="bg-orange-100 border-orange-200 p-2 rounded-lg border">
@@ -127,6 +131,7 @@ export default function HouseCreation() {
                       className="p-4 flex items-center hover:bg-orange-50"
                       value={prediction.description}
                       key={prediction.place_id}
+                      onSelect={() => setSelectedAddress(prediction)}
                       onClick={() => handleChangeAddress(prediction.place_id)}
                     >
                       <div className="bg-orange-100 rounded-lg p-2 border-orange-200 border">
