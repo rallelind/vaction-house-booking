@@ -44,6 +44,16 @@ export default function HouseCreation() {
       disableDefaultUI: true,
       gestureHandling: "none",
       keyboardShortcuts: false,
+      styles: [
+        {
+          featureType: 'poi',
+          stylers: [{ visibility: 'off' }] // Hide points of interest (business places, etc.)
+        },
+        {
+          featureType: 'transit',
+          stylers: [{ visibility: 'off' }] // Hide public transport
+        }
+      ]
     };
 
     const loader = new Loader({
@@ -118,7 +128,7 @@ export default function HouseCreation() {
       <div className="relative w-[600px] m-auto">
         <div id="map" className="h-[500px] rounded-lg"></div>
         <div className="absolute top-0 p-6 w-full">
-          <Combobox onChange={handleChangeAddress}>
+          <Combobox>
             {({ open }) => (
               <>
                 <div
