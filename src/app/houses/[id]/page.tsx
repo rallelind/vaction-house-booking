@@ -19,6 +19,8 @@ export default function HouseCreation() {
 
   const mapsRef = useRef<null | google.maps.Map>(null);
 
+  const markerRef = useRef<null | google.maps.Marker>(null);
+
   const placeServiceRef = useRef<null | google.maps.places.PlacesService>(null);
 
   useEffect(() => {
@@ -69,14 +71,19 @@ export default function HouseCreation() {
           });
         }
 
-        const { Marker } = await loader.importLibrary("marker"); 
+        const { Marker } = await loader.importLibrary("marker");
 
         const { AutocompleteService, PlacesService } =
           await loader.importLibrary("places");
 
         const autoCompleteService = new AutocompleteService();
         const placesService = new PlacesService(document.createElement("div"));
+        const marker = new Marker({
+          icon: "/map-marker.svg",
+          map
+        });
 
+        markerRef.current = marker;
         autoCompleteServiceRef.current = autoCompleteService;
         mapsRef.current = map;
         placeServiceRef.current = placesService;
@@ -100,7 +107,9 @@ export default function HouseCreation() {
         lng,
       };
 
+      markerRef.current?.setPosition(pos);
       mapsRef.current?.setCenter(pos);
+      mapsRef.current?.setZoom(16)
     });
   };
 
@@ -114,7 +123,9 @@ export default function HouseCreation() {
               <>
                 <div
                   className={`flex ${
-                    !open || predictions.length === 0 ? "rounded-lg" : "rounded-t-lg"
+                    !open || predictions.length === 0
+                      ? "rounded-lg"
+                      : "rounded-t-lg"
                   } p-4 w-full bg-white cursor-text`}
                 >
                   <div className="bg-orange-100 border-orange-200 p-2 rounded-lg border">
