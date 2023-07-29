@@ -5,6 +5,8 @@ import GoogleSignInButton from "@/components/sign-in/Google";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Avatar from "@/components/ui/Avatar";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import { useEffect } from "react";
 
 const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -15,7 +17,7 @@ const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default function Houses() {
-  const { user, userError } = useUser();
+
 
   return (
     <div>
@@ -51,23 +53,6 @@ export default function Houses() {
           </div>
         </div>
       </div>
-      <Dialog
-        open={userError ? true : false}
-        onClose={() => console.log("closed")}
-      >
-        <div className="fixed inset-0 bg-black/10" aria-hidden="true" />
-        <div className="fixed inset-0 flex justify-center items-start mt-20">
-          <Dialog.Panel className="bg-white p-6 rounded-lg w-[40%] text-center">
-            <Dialog.Title className="text-xl font-semibold">
-              Din session er udløbet!
-            </Dialog.Title>
-            <Dialog.Description className="text-md font-light">
-              Venligst log in for med understående metode for at logge ind!
-            </Dialog.Description>
-            <GoogleSignInButton />
-          </Dialog.Panel>
-        </div>
-      </Dialog>
     </div>
   );
 }

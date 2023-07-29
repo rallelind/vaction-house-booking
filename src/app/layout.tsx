@@ -12,10 +12,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider appearance={{ elements: {
-      card: "bg-transparent shadow-none",
-      formButtonPrimary: "bg-black hover:bg-black"
-    } }}>
+    <ClerkProvider
+      appearance={{
+        elements: {
+          card: "bg-transparent shadow-none",
+          formButtonPrimary: "bg-black hover:bg-black",
+        },
+      }}
+    >
       <html lang="en">
         <body className="font-sans">{children}</body>
       </html>

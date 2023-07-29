@@ -1,6 +1,7 @@
 "use client"
 import useUser from "@/hooks/useUser"
 import Avatar from "@/components/ui/Avatar";
+import useHouse from "@/hooks/useHouse";
 
 export default function Layout({children}: {
   children: React.ReactNode
