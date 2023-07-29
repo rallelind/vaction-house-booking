@@ -1,7 +1,7 @@
 "use client";
 import { Dialog } from "@headlessui/react";
 import useUser from "@/hooks/useUser";
-import GoogleSignInButton from "@/components/sign-in/google";
+import GoogleSignInButton from "@/components/sign-in/Google";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Avatar from "@/components/ui/Avatar";

@@ -1,6 +1,6 @@
 "use client";
-import UserInvite from "@/components/house-adminstrate/user-invite";
-import ItemSelect from "@/components/house-adminstrate/item-select";
+import UserInvite from "@/components/house-adminstrate/UserInvite";
+import ItemSelect from "@/components/house-adminstrate/ItemSelect";
 import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
@@ -10,8 +10,8 @@ import {
 import { Dialog } from "@headlessui/react";
 import { useState } from "react";
 import Avatar from "@/components/ui/Avatar";
-import AddFamilyModalContent from "@/components/house-adminstrate/add-family-modal-content";
-import ImageUpload from "@/components/house-adminstrate/image-upload";
+import AddFamilyModalContent from "@/components/house-adminstrate/AddFamilyModalContent";
+import ImageUpload from "@/components/house-adminstrate/ImageUpload";
 
 export default function HouseAdminstration() {
   let [isOpen, setIsOpen] = useState(false);

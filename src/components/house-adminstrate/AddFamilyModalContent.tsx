@@ -1,5 +1,5 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
-import UserInvite from "./user-invite";
+import UserInvite from "./UserInvite";
 import { Dialog } from "@headlessui/react";
 
 const AddFamilyModalContent = ({ onClose }: { onClose: () => void }) => {
