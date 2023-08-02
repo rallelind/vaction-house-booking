@@ -1,23 +1,17 @@
 "use client";
-import { Dialog } from "@headlessui/react";
-import useUser from "@/hooks/useUser";
-import GoogleSignInButton from "@/components/sign-in/Google";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import Avatar from "@/components/ui/Avatar";
-import apiWrapper from "@/lib/api-wrapper/api-wrapper";
-import { useEffect } from "react";
+import useHouses from "@/hooks/useHouses";
 
 const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="rounded-lg relative border w-80 h-80 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer">
+    <div className="rounded-lg bg-orange-50 relative border w-60 h-60 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer">
       {children}
     </div>
   );
 };
 
 export default function Houses() {
-
+  const { houses, housesError, housesIsloading } = useHouses();
 
   return (
     <div>
@@ -30,28 +24,25 @@ export default function Houses() {
             <p className="mt-6 font-medium">Tilføj et hus</p>
           </div>
         </HouseWrapper>
-        <div className="h-80 w-80 border rounded-lg border-gray-300 relative hover:shadow-md cursor-pointer">
-          <img
-            className="object-cover h-40 w-full rounded-tl-lg rounded-tr-lg"
-            src="/huset.jpg"
-            alt="billede af huset"
-          />
-          <div className="bg-orange-100 w-fit p-1 rounded-lg flex items-center top-2 right-2 absolute">
-            <MapPinIcon className="h-4 mr-2" />
-            <p>Havklitvej 60</p>
-          </div>
-          <div className="p-4">
-            <p className="text-2xl font-semibold">Havklitvej 60</p>
-            <div className="mt-2">
-              <p>Husets admins:</p>
-              <div className="flex -space-x-4 mt-2">
-                <Avatar />
-                <Avatar />
-                <Avatar />
-              </div>
+        {houses?.map((house) => (
+          <div
+            key={house.id}
+            className="h-60 w-60 border bg-orange-50 rounded-lg border-gray-300 relative hover:shadow-md cursor-pointer"
+          >
+            <img
+              className="object-cover h-40 w-full rounded-tl-lg rounded-tr-lg"
+              src={house.login_images ? house.login_images[0] : "/huset.jpg"}
+              alt="billede af huset"
+            />
+            <div className="bg-orange-100 w-fit p-1 rounded-lg flex items-center top-2 right-2 absolute">
+              <MapPinIcon className="h-4 mr-2" />
+              <p>{house?.address}</p>
+            </div>
+            <div className="p-4">
+              <p className="text-2xl font-semibold">{house?.house_name}</p>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </div>
   );

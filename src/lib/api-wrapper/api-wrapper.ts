@@ -20,11 +20,6 @@ export default async function apiWrapper(
       request
     );
 
-    if (response.status === 403) {
-      window.location.assign(`${window.location}/sign-in`);
-      return;
-    }
-
     if (response.ok) {
       return await response.json();
     } else {
