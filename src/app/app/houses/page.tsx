@@ -10,8 +10,18 @@ const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+const HousesLoader = () => {
+  return (
+    <HomeIcon className="animate-bounce h-14 m-auto p-2 bg-orange-100 border border-orange-200 rounded-lg" />
+  );
+};
+
 export default function Houses() {
   const { houses, housesError, housesIsloading } = useHouses();
+
+  if (housesIsloading) {
+    return <HousesLoader />;
+  }
 
   return (
     <div>

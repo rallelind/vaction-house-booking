@@ -1,22 +1,24 @@
 "use client"
 import useUser from "@/hooks/useUser"
 import Avatar from "@/components/ui/Avatar";
-import useHouse from "@/hooks/useHouse";
+import { useAuth, useSession } from "@clerk/nextjs";
 
 export default function Layout({children}: {
   children: React.ReactNode
 }) {
 
-    const { user } = useUser();
+    const { session } = useSession()
+
+    const { firstName, primaryEmailAddress, imageUrl } = session?.user || {}
     
     return (
         <div>
-            <header className="border-b p-6">
+            <header className="border-b p-4">
                 <div className="flex items-center hover:bg-orange-50 p-2 w-fit rounded-lg cursor-pointer">
-                    <Avatar avatarUrl={user?.picture} />
+                    <Avatar avatarUrl={imageUrl} />
                     <div className="ml-4">
-                        <p className="font-semibold text-md">{user?.name}</p>
-                        <p className="font-light text-sm">{user?.email}</p>
+                        <p className="font-semibold text-md">{firstName}</p>
+                        <p className="font-light text-sm">{primaryEmailAddress?.emailAddress}</p>
                     </div>
                 </div>
             </header>
