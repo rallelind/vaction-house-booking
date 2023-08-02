@@ -45,8 +45,8 @@ export default function ApplicationLayout({
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
-        <div className="relative">
-          <aside className="top-0 left-0 h-screen min-w-max md:sticky lg:w-64 bg-orange-50 p-4">
+        <div className="relative border-r border-orange-100">
+          <aside className="top-0 left-0 h-screen min-w-max md:sticky lg:w-44 bg-orange-50 p-4">
             <h1 className="hidden lg:block text-2xl capitalize font-bold p-3">
               {house?.house_name}
             </h1>
@@ -84,7 +84,7 @@ export default function ApplicationLayout({
                 <Avatar avatarUrl={imageUrl} />
                 <div className="hidden lg:block ml-3">
                   <p className="font-semibold">{firstName}</p>
-                  <p className="text-xs truncate">
+                  <p className="text-xs truncate w-32">
                     {primaryEmailAddress?.emailAddress}
                   </p>
                 </div>
