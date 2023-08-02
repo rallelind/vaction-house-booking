@@ -1,14 +1,7 @@
 "use client";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import useHouses from "@/hooks/useHouses";
-
-const HouseWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="rounded-lg bg-orange-50 relative border w-60 h-60 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer">
-      {children}
-    </div>
-  );
-};
+import { useRouter } from "next/navigation";
 
 const HousesLoader = () => {
   return (
@@ -19,6 +12,8 @@ const HousesLoader = () => {
 export default function Houses() {
   const { houses, housesError, housesIsloading } = useHouses();
 
+  const { push } = useRouter();
+
   if (housesIsloading) {
     return <HousesLoader />;
   }
@@ -26,21 +21,25 @@ export default function Houses() {
   return (
     <div>
       <div className="grid grid-flow-col auto-cols-auto gap-6 justify-center">
-        <HouseWrapper>
+        <button
+          onClick={() => push(`/app/houses/create`)}
+          className="rounded-lg bg-orange-50 relative border w-60 h-60 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer"
+        >
           <div className="w-full text-center">
             <div className="flex justify-center">
               <HomeIcon className="h-12 p-2 bg-orange-100 border border-orange-200 rounded-lg" />
             </div>
             <p className="mt-6 font-medium">Tilføj et hus</p>
           </div>
-        </HouseWrapper>
+        </button>
         {houses?.map((house) => (
-          <div
+          <button
             key={house.id}
             className="h-60 w-60 border bg-orange-50 rounded-lg border-gray-300 relative hover:shadow-md cursor-pointer"
+            onClick={() => push(`/app/${house.id}/house`)}
           >
             <img
-              className="object-cover h-40 w-full rounded-tl-lg rounded-tr-lg"
+              className="object-cover w-full rounded-tl-lg rounded-tr-lg"
               src={house.login_images ? house.login_images[0] : "/huset.jpg"}
               alt="billede af huset"
             />
@@ -49,9 +48,11 @@ export default function Houses() {
               <p>{house?.address}</p>
             </div>
             <div className="p-4">
-              <p className="text-2xl font-semibold">{house?.house_name}</p>
+              <p className="text-2xl capitalize font-semibold">
+                {house?.house_name}
+              </p>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>
