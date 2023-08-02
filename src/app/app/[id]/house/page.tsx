@@ -1,5 +1,14 @@
+"use client";
+import useHouse from "@/hooks/useHouse";
+import { useParams } from "next/navigation";
+
 export default function Application() {
-    return (
-        <h1>Application</h1>
-    )
+  const { id } = useParams();
+  const { house, houseError, houseLoading } = useHouse(id);
+
+  return (
+    <div>
+
+    </div>
+  );
 }

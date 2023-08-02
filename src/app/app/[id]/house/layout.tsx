@@ -12,24 +12,46 @@ import Link from "next/link";
 import useUser from "@/hooks/useUser";
 import NavigationItem from "@/components/navigation/NavigationItem";
 import Avatar from "@/components/ui/Avatar";
+import { useSession } from "@clerk/nextjs";
+import useHouse from "@/hooks/useHouse";
+import { useParams } from "next/navigation";
+import { HousesLoader } from "../../houses/page";
 
 export default function ApplicationLayout({
   children,
 }: {
   children: ReactNode;
 }) {
-  const { user } = useUser();
+  const { session } = useSession();
+
+  const { id } = useParams();
+
+  const { house, houseLoading } = useHouse(id);
+
+  if (houseLoading) {
+    return (
+      <div className="min-h-screen mt-auto flex">
+        <HousesLoader />
+      </div>
+    );
+  }
+
+  const { firstName, primaryEmailAddress, imageUrl } = session?.user || {};
+
+  const houseAdmin = house?.house_admins.includes(
+    primaryEmailAddress?.emailAddress as string
+  );
 
   return (
     <div className="flex min-h-screen flex-col">
       <div className="flex flex-1">
         <div className="relative">
           <aside className="top-0 left-0 h-screen min-w-max md:sticky lg:w-64 bg-orange-50 p-4">
-            <h1 className="hidden lg:block text-2xl font-bold p-3">
-              Havklitvej 60
+            <h1 className="hidden lg:block text-2xl capitalize font-bold p-3">
+              {house?.house_name}
             </h1>
             <ul>
-              {user?.house_admin && (
+              {houseAdmin && (
                 <NavigationItem
                   href="/application/house/adminstrate"
                   icon={<Cog6ToothIcon className="h-6 lg:mr-3" />}
@@ -59,10 +81,12 @@ export default function ApplicationLayout({
             </ul>
             <div className="fixed bottom-4">
               <div className="flex items-center">
-                <Avatar avatarUrl={user?.picture} />
+                <Avatar avatarUrl={imageUrl} />
                 <div className="hidden lg:block ml-3">
-                  <p>{user?.name}</p>
-                  <p className="text-xs truncate">{user?.email}</p>
+                  <p className="font-semibold">{firstName}</p>
+                  <p className="text-xs truncate">
+                    {primaryEmailAddress?.emailAddress}
+                  </p>
                 </div>
               </div>
             </div>

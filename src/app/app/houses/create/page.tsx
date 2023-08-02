@@ -132,7 +132,7 @@ export default function HouseCreation() {
             {({ open }) => (
               <>
                 <div
-                  className={`flex ${
+                  className={`flex border ${
                     !open || predictions.length === 0
                       ? "rounded-lg"
                       : "rounded-t-lg"
