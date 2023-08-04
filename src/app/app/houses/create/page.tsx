@@ -138,16 +138,14 @@ export default function HouseCreation() {
     <div className="flex justify-center">
       <div className="mr-4 w-full">
         {selectedAddressError && (
-          <div className="p-4 rounded-lg text-center w-fit text-yellow-800 bg-yellow-50 font-medium">
+          <div className="p-4 mb-6 rounded-lg text-center w-full border border-yellow-300 text-yellow-800 bg-yellow-50 font-medium">
             <p>Venligst vælg en præcis hus addresse</p>
           </div>
         )}
-        <input />
-        <UserInvite label="Vælg hus admins" />
-      </div>
-      <div className="relative w-full">
-        <div id="map" className="h-[500px] rounded-lg"></div>
-        <div className="absolute top-0 p-6 w-full">
+        <label className="text-md font-medium text-gray-900">
+          Vælg en addresse
+        </label>
+        <div className="relative mt-2">
           <Combobox>
             {({ open }) => (
               <>
@@ -155,30 +153,31 @@ export default function HouseCreation() {
                   className={`flex border ${
                     !open || predictions.length === 0
                       ? "rounded-lg"
-                      : "rounded-t-lg"
-                  } p-4 w-full bg-white cursor-text`}
+                      : "rounded-t-lg border-b-0"
+                  } p-2 w-full cursor-text border-gray-300`}
                 >
-                  <div className="bg-orange-100 border-orange-200 p-2 rounded-lg border">
-                    <MapPinIcon className="h-6" />
+                  <div className="bg-orange-100 border-orange-200 p-1 rounded-lg border">
+                    <MapPinIcon className="h-4" />
                   </div>
                   <Combobox.Input
-                    className="focus:outline-none w-full ml-4"
+                    className="focus:outline-none w-full ml-2 p-0 "
                     onChange={(e) => setInputQuery(e.target.value)}
+                    placeholder="Indtast din adresse"
                   />
                 </div>
                 <Combobox.Options
-                  className={`bg-white rounded-b-lg max-h-60 overflow-auto`}
+                  className={`bg-white rounded-b-lg border-gray-300 border max-h-60 overflow-auto absolute w-full`}
                   onChange={(e) => console.log(e)}
                 >
                   {predictions.map((prediction) => (
                     <Combobox.Option
-                      className="p-4 flex items-center hover:bg-orange-50"
+                      className="p-2 flex items-center hover:bg-orange-50"
                       value={prediction.description}
                       key={prediction.place_id}
                       onClick={() => handleChangeAddress(prediction.place_id)}
                     >
-                      <div className="bg-orange-100 rounded-lg p-2 border-orange-200 border">
-                        <HomeIcon className="h-6" />
+                      <div className="bg-orange-100 rounded-lg p-1 border-orange-200 border">
+                        <HomeIcon className="h-4" />
                       </div>
                       <p className="ml-4">{prediction.description}</p>
                     </Combobox.Option>
@@ -188,6 +187,16 @@ export default function HouseCreation() {
             )}
           </Combobox>
         </div>
+        <div className="mt-6">
+          <UserInvite label="Tilføj hus admins" />
+        </div>
+        <div className="mt-6">
+          <label className="text-md font-medium text-gray-900">Navngiv huset</label>
+          <input className="block w-full p-2 border mt-2 border-gray-300 rounded-lg" placeholder="Vælg et navn til dit hus..." />
+        </div>
+      </div>
+      <div className="relative w-full">
+        <div id="map" className="h-[500px] rounded-lg"></div>
       </div>
     </div>
   );

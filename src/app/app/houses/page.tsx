@@ -23,7 +23,7 @@ export default function Houses() {
       <div className="grid grid-flow-col auto-cols-auto gap-6 justify-center">
         <button
           onClick={() => push(`/app/houses/create`)}
-          className="rounded-lg bg-orange-50 relative border w-80 h-80 flex items-center justify-center object-contain border-gray-300 hover:shadow-md cursor-pointer"
+          className="rounded-lg relative border w-80 h-80 flex items-center justify-center object-contain border-gray-300 hover:shadow-sm cursor-pointer"
         >
           <div className="w-full text-center">
             <div className="flex justify-center">
