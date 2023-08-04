@@ -5,12 +5,16 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { MapPinIcon, HomeIcon } from "@heroicons/react/24/outline";
 import UserInvite from "@/components/house-adminstrate/UserInvite";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import { useRouter } from "next/navigation";
+import useHouses from "@/hooks/useHouses";
 
 export default function HouseCreation() {
   const [inputQuery, setInputQuery] = useState("");
   const [predictions, setPredictions] = useState<
     [] | google.maps.places.AutocompletePrediction[]
   >([]);
+
+  const { push } = useRouter()
 
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [selectedAddressError, setSelectedAddressError] =
@@ -27,6 +31,8 @@ export default function HouseCreation() {
   const markerRef = useRef<null | google.maps.Marker>(null);
 
   const placeServiceRef = useRef<null | google.maps.places.PlacesService>(null);
+
+  const { mutateHouses } = useHouses()
 
   useEffect(() => {
     autoCompleteServiceRef.current
@@ -139,14 +145,24 @@ export default function HouseCreation() {
   };
 
   const submitHouse = async () => {
-    const address = selectedAddress
+    try {
+      const body = {
+        address: selectedAddress,
+        house_name: houseName,
+        house_admins: houseAdmins,
+      };
 
-    const response = await apiWrapper("/house", {
-      method: "POST",
-      body: JSON.stringify({ houseName, houseAdmins, address }),
-    });
+      await apiWrapper("house", {
+        method: "POST",
+        body: JSON.stringify(body),
+      });
 
-    console.log(response)
+      mutateHouses()
+      push("/app/houses")
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -203,7 +219,10 @@ export default function HouseCreation() {
           </Combobox>
         </div>
         <div className="mt-6">
-          <UserInvite label="Tilføj hus admins" onChangeUsers={setHouseAdmins} />
+          <UserInvite
+            label="Tilføj hus admins"
+            onChangeUsers={setHouseAdmins}
+          />
         </div>
         <div className="mt-6">
           <label className="text-md font-medium text-gray-900">
@@ -216,7 +235,10 @@ export default function HouseCreation() {
             value={houseName}
           />
         </div>
-        <button onClick={submitHouse} className="bg-orange-50 mt-12 p-2 pr-6 pl-6 font-normal rounded-lg border border-orange-200">
+        <button
+          onClick={submitHouse}
+          className="bg-orange-50 mt-12 p-2 pr-6 pl-6 font-normal rounded-lg border border-orange-200"
+        >
           Lav hus
         </button>
       </div>

@@ -22,8 +22,6 @@ export default async function apiWrapper(
       request
     );
 
-    console.log(response)
-
     if (response.ok) {
       return await response.json();
     } else {

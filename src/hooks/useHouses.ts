@@ -12,11 +12,12 @@ const fetcher = async (url: string) => {
 };
 
 export default function useHouses() {
-  const { data, error, isLoading } = useSWR("/house", fetcher);
+  const { data, error, isLoading, mutate } = useSWR("/house", fetcher);
 
   return {
     houses: data as House[],
     housesError: error,
     housesIsloading: isLoading,
+    mutateHouses: mutate,
   };
 }
