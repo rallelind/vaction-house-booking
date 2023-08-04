@@ -4,7 +4,11 @@ import { useState, KeyboardEvent } from "react";
 import { XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
 import { MultiSelectInterface } from "../types";
 
-const UserInvite: FC<MultiSelectInterface> = ({ label, description }) => {
+const UserInvite: FC<MultiSelectInterface> = ({
+  label,
+  description,
+  onChangeUsers,
+}) => {
   const [items, setItems] = useState<string[]>([]);
   const [itemToAdd, setItemToAdd] = useState<string>("");
 
@@ -16,8 +20,10 @@ const UserInvite: FC<MultiSelectInterface> = ({ label, description }) => {
     }
 
     if (event.key === "Enter" && event.currentTarget.checkValidity()) {
-      setItems([...items, itemToAdd]);
+      const newItems = [...items, itemToAdd];
+      setItems(newItems);
       setItemToAdd("");
+      onChangeUsers(newItems);
     }
   };
 
@@ -40,10 +46,12 @@ const UserInvite: FC<MultiSelectInterface> = ({ label, description }) => {
           onClick={handleOuterInputClick}
           className="mt-2 p-1 w-full cursor-text text-md rounded-md border border-gray-300 text-gray-900"
         >
-          
           <div className="max-w-full">
             {items.map((item) => (
-              <span key={item} className="w-fit inline-block align-center mr-1 h-full">
+              <span
+                key={item}
+                className="w-fit inline-block align-center mr-1 h-full"
+              >
                 <div className="flex items-center w-fit bg-orange-100 rounded-md pr-1 pl-1">
                   <div className="flex items-center">
                     <UserIcon className="h-4 mr-2" />

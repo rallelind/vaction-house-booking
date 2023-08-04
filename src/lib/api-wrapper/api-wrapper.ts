@@ -14,11 +14,15 @@ export default async function apiWrapper(
     }
 
     request.headers = reqHeaders;
+    
+    console.log(request)
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
       request
     );
+
+    console.log(response)
 
     if (response.ok) {
       return await response.json();

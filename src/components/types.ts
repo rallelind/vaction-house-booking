@@ -9,6 +9,7 @@ export interface NavigationItemInterface {
 export interface MultiSelectInterface {
   label: string;
   description?: string;
+  onChangeUsers: (value: string[]) => void;
 }
 
 export interface ItemSelectInterface {

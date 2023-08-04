@@ -4,6 +4,7 @@ import { Combobox } from "@headlessui/react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MapPinIcon, HomeIcon } from "@heroicons/react/24/outline";
 import UserInvite from "@/components/house-adminstrate/UserInvite";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 export default function HouseCreation() {
   const [inputQuery, setInputQuery] = useState("");
@@ -14,6 +15,9 @@ export default function HouseCreation() {
   const [selectedAddress, setSelectedAddress] = useState<string>("");
   const [selectedAddressError, setSelectedAddressError] =
     useState<boolean>(false);
+
+  const [houseAdmins, setHouseAdmins] = useState<string[]>([]);
+  const [houseName, setHouseName] = useState<string>("");
 
   const autoCompleteServiceRef =
     useRef<null | google.maps.places.AutocompleteService>(null);
@@ -134,9 +138,20 @@ export default function HouseCreation() {
     });
   };
 
+  const submitHouse = async () => {
+    const address = selectedAddress
+
+    const response = await apiWrapper("/house", {
+      method: "POST",
+      body: JSON.stringify({ houseName, houseAdmins, address }),
+    });
+
+    console.log(response)
+  };
+
   return (
     <div className="flex justify-center">
-      <div className="mr-4 w-full">
+      <div className="mr-4 w-full flex flex-col">
         {selectedAddressError && (
           <div className="p-4 mb-6 rounded-lg text-center w-full border border-yellow-300 text-yellow-800 bg-yellow-50 font-medium">
             <p>Venligst vælg en præcis hus addresse</p>
@@ -188,12 +203,22 @@ export default function HouseCreation() {
           </Combobox>
         </div>
         <div className="mt-6">
-          <UserInvite label="Tilføj hus admins" />
+          <UserInvite label="Tilføj hus admins" onChangeUsers={setHouseAdmins} />
         </div>
         <div className="mt-6">
-          <label className="text-md font-medium text-gray-900">Navngiv huset</label>
-          <input className="block w-full p-2 border mt-2 border-gray-300 rounded-lg" placeholder="Vælg et navn til dit hus..." />
+          <label className="text-md font-medium text-gray-900">
+            Navngiv huset
+          </label>
+          <input
+            className="block w-full p-2 border mt-2 border-gray-300 rounded-lg"
+            placeholder="Vælg et navn til dit hus..."
+            onChange={(e) => setHouseName(e.target.value)}
+            value={houseName}
+          />
         </div>
+        <button onClick={submitHouse} className="bg-orange-50 mt-12 p-2 pr-6 pl-6 font-normal rounded-lg border border-orange-200">
+          Lav hus
+        </button>
       </div>
       <div className="relative w-full">
         <div id="map" className="h-[500px] rounded-lg"></div>
