@@ -3,6 +3,7 @@ import { useEffect, useRef, useMemo, useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MapPinIcon, HomeIcon } from "@heroicons/react/24/outline";
+import UserInvite from "@/components/house-adminstrate/UserInvite";
 
 export default function HouseCreation() {
   const [inputQuery, setInputQuery] = useState("");
@@ -10,9 +11,9 @@ export default function HouseCreation() {
     [] | google.maps.places.AutocompletePrediction[]
   >([]);
 
-  const [selectedAddress, setSelectedAddress] = useState<
-    boolean | google.maps.places.AutocompletePrediction
-  >(false);
+  const [selectedAddress, setSelectedAddress] = useState<string>("");
+  const [selectedAddressError, setSelectedAddressError] =
+    useState<boolean>(false);
 
   const autoCompleteServiceRef =
     useRef<null | google.maps.places.AutocompleteService>(null);
@@ -46,14 +47,14 @@ export default function HouseCreation() {
       keyboardShortcuts: false,
       styles: [
         {
-          featureType: 'poi',
-          stylers: [{ visibility: 'off' }] // Hide points of interest (business places, etc.)
+          featureType: "poi",
+          stylers: [{ visibility: "off" }], // Hide points of interest (business places, etc.)
         },
         {
-          featureType: 'transit',
-          stylers: [{ visibility: 'off' }] // Hide public transport
-        }
-      ]
+          featureType: "transit",
+          stylers: [{ visibility: "off" }], // Hide public transport
+        },
+      ],
     };
 
     const loader = new Loader({
@@ -90,7 +91,7 @@ export default function HouseCreation() {
         const placesService = new PlacesService(document.createElement("div"));
         const marker = new Marker({
           icon: "/map-marker.svg",
-          map
+          map,
         });
 
         markerRef.current = marker;
@@ -100,6 +101,7 @@ export default function HouseCreation() {
       })
       .catch((e) => {
         // do something
+        console.log(e);
       });
   }, []);
 
@@ -119,13 +121,31 @@ export default function HouseCreation() {
 
       markerRef.current?.setPosition(pos);
       mapsRef.current?.setCenter(pos);
-      mapsRef.current?.setZoom(16)
+      mapsRef.current?.setZoom(16);
+
+      if (placeDetails.types?.includes("premise")) {
+        setSelectedAddress(placeDetails.name as string);
+        setSelectedAddressError(false);
+        return;
+      } else {
+        setSelectedAddressError(true);
+        return;
+      }
     });
   };
 
   return (
-    <div>
-      <div className="relative w-[600px] m-auto">
+    <div className="flex justify-center">
+      <div className="mr-4 w-full">
+        {selectedAddressError && (
+          <div className="p-4 rounded-lg text-center w-fit text-yellow-800 bg-yellow-50 font-medium">
+            <p>Venligst vælg en præcis hus addresse</p>
+          </div>
+        )}
+        <input />
+        <UserInvite label="Vælg hus admins" />
+      </div>
+      <div className="relative w-full">
         <div id="map" className="h-[500px] rounded-lg"></div>
         <div className="absolute top-0 p-6 w-full">
           <Combobox>
@@ -148,13 +168,13 @@ export default function HouseCreation() {
                 </div>
                 <Combobox.Options
                   className={`bg-white rounded-b-lg max-h-60 overflow-auto`}
+                  onChange={(e) => console.log(e)}
                 >
                   {predictions.map((prediction) => (
                     <Combobox.Option
                       className="p-4 flex items-center hover:bg-orange-50"
                       value={prediction.description}
                       key={prediction.place_id}
-                      onSelect={() => setSelectedAddress(prediction)}
                       onClick={() => handleChangeAddress(prediction.place_id)}
                     >
                       <div className="bg-orange-100 rounded-lg p-2 border-orange-200 border">

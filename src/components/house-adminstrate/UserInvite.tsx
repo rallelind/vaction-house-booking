@@ -38,7 +38,7 @@ const UserInvite: FC<MultiSelectInterface> = ({ label, description }) => {
         {!!description && <p className="font-light">{description}</p>}
         <div
           onClick={handleOuterInputClick}
-          className="mt-2 p-1 w-[50%] cursor-text text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900"
+          className="mt-2 p-1 w-full cursor-text text-md rounded-md bg-gray-50 border border-gray-300 text-gray-900"
         >
           <div className="max-w-full">
             {items.map((item) => (
