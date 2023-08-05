@@ -124,7 +124,6 @@ export default function Calendar() {
                         !isEqual(day, endDate) &&
                         !isSameMonth(day, firstDayCurrentMonth) &&
                         'text-gray-400',
-                      isEqual(day, startDate) && isEqual(day, endDate) && !isToday(day) && 'bg-gray-900',
                       isEqual(day, startDate) && !isEqual(day, endDate) && 'rounded-l-full',
                       isEqual(day, endDate) && !isEqual(day, startDate) && 'rounded-r-full',
                       isEqual(day, startDate) && isEqual(day, endDate) && 'font-semibold',

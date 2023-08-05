@@ -1,19 +1,22 @@
 import useSWR from "swr";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 const fetcher = async (url: string) => {
-    const response = await fetch(url, { method: 'GET', credentials: 'include' });
-
-    return response.json()
+    try {
+        const response = await apiWrapper(url, { method: "GET" });
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }
 
 export default function useFamily() {
-
-    const { data, isLoading, error, mutate } = useSWR("http://localhost:3000/family", fetcher);
+    const { data, error, isLoading, mutate } = useSWR("family", fetcher);
     
     return {
         family: data,
-        loadingFamily: isLoading,
         familyError: error,
-        mutateFamily: mutate
-    }
+        familyLoading: isLoading,
+        mutateFamily: mutate,
+    };
 }
