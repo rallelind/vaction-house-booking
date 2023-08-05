@@ -53,28 +53,28 @@ export default function ApplicationLayout({
             <ul>
               {houseAdmin && (
                 <NavigationItem
-                  href="/application/house/adminstrate"
+                  href={`/app/${house.id}/house/adminstrate`}
                   icon={<Cog6ToothIcon className="h-6 lg:mr-3" />}
                   text="Adminstrer huset"
                 />
               )}
               <NavigationItem
-                href="/application/bookings"
+                href={`/app/${house.id}/house/bookings`}
                 icon={<HomeModernIcon className="h-6 lg:mr-3" />}
                 text="Bookinger"
               />
               <NavigationItem
-                href="/application/trips"
+                href={`/app/${house.id}/house/trips`}
                 icon={<MapIcon className="h-6 lg:mr-3" />}
                 text="Dine ture"
               />
               <NavigationItem
-                href="/application/availability"
+                href={`/app/${house.id}/house/availability`}
                 icon={<CalendarDaysIcon className="h-6 lg:mr-3" />}
                 text="Tjek ledighed"
               />
               <NavigationItem
-                href="/application/your-family"
+                href={`/app/${house.id}/house/your-family`}
                 icon={<UsersIcon className="h-6 lg:mr-3" />}
                 text="Din familie"
               />

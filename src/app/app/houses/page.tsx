@@ -35,7 +35,7 @@ export default function Houses() {
         {houses?.map((house) => (
           <button
             key={house.id}
-            className="w-60 h-60 border bg-orange-50 rounded-lg border-gray-300 relative hover:shadow-md cursor-pointer"
+            className="w-60 h-60 bg-orange-50 rounded-lg relative hover:shadow-md cursor-pointer"
             onClick={() => push(`/app/${house.id}/house`)}
           >
             <img
