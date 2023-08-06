@@ -6,3 +6,19 @@ export interface House {
     house_admins: string[];
     house_name: string;
 }
+
+export interface Booking {
+    id: number;
+    start_date: Date;
+    end_date: Date;
+    approved: boolean;
+    house_id: string;
+    user_bookings: string;
+}
+
+export interface Family {
+    id: number;
+    family_name: string;
+    family_members: string[];
+    house_id: string;
+}

@@ -92,7 +92,7 @@ export default function ApplicationLayout({
             </div>
           </aside>
         </div>
-        <div className="flex w-0 flex-1 flex-col">{children}</div>
+        <div className="flex w-0 flex-1 p-6 flex-col">{children}</div>
       </div>
     </div>
   );

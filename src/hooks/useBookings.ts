@@ -10,13 +10,13 @@ const fetcher = async (url: string) => {
   }
 };
 
-export default function useBookings() {
-    const { data, error, isLoading, mutate } = useSWR("bookings", fetcher);
-    
-    return {
-        bookings: data,
-        bookingsError: error,
-        bookingsLoading: isLoading,
-        mutateBookings: mutate,
-    };
+export default function useBookings(id: string) {
+  const { data, error, isLoading, mutate } = useSWR(`bookings/${id}`, fetcher);
+
+  return {
+    bookings: data,
+    bookingsError: error,
+    bookingsLoading: isLoading,
+    mutateBookings: mutate,
+  };
 }
