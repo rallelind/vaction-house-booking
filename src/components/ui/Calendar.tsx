@@ -23,11 +23,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Calendar({
-  onChangeDate,
-}: {
-  onChangeDate: (startDate: Date, endDate: Date) => void;
-}) {
+export default function Calendar() {
   let today = startOfToday();
   let [startDate, setStartDate] = useState<Date>(today);
   let [endDate, setEndDate] = useState<Date>(today);
@@ -63,9 +59,6 @@ export default function Calendar({
       if (isBefore(day, startDate)) {
         setStartDate(day);
       }
-
-      onChangeDate(startDate, endDate);
-      return
     },
     [endDate, startDate]
   );
