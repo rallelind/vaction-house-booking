@@ -4,8 +4,16 @@ import Calendar from "@/components/ui/Calendar";
 import { clerkClient } from "@clerk/nextjs";
 import useBookings from "@/hooks/useBookings";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import startOfToday from "date-fns/startOfToday";
 
-export default async function Application() {
+export default function Application() {
+  let today = startOfToday();
+
+  const [dates, setDates] = useState({
+    startDate: today,
+    endDate: today,
+  });
+
   const submitBooking = async () => {
     const body = {};
 
@@ -18,7 +26,7 @@ export default async function Application() {
   return (
     <main>
       <div>
-        <Calendar />
+        <Calendar onChange={setDates} dates={dates} />
       </div>
     </main>
   );

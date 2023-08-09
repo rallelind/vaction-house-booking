@@ -23,10 +23,16 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Calendar() {
+interface CalendarProps {
+  dates: {
+    startDate: Date;
+    endDate: Date;
+  };
+  onChange: (dates: { startDate: Date; endDate: Date }) => void;
+}
+
+export default function Calendar({ dates, onChange }: CalendarProps) {
   let today = startOfToday();
-  let [startDate, setStartDate] = useState<Date>(today);
-  let [endDate, setEndDate] = useState<Date>(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
 
@@ -34,6 +40,8 @@ export default function Calendar() {
     start: firstDayCurrentMonth,
     end: endOfMonth(firstDayCurrentMonth),
   });
+
+  const { startDate, endDate } = dates;
 
   function previousMonth() {
     let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
@@ -45,23 +53,19 @@ export default function Calendar() {
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
   }
 
-  const handleSelectedDay = useCallback(
-    (day: Date) => {
-      if (isEqual(day, startDate) || isEqual(day, endDate)) {
-        setEndDate(day);
-        setStartDate(day);
-      }
+  const handleSelectedDay = (day: Date) => {
+    if (isEqual(day, startDate) || isEqual(day, endDate)) {
+      onChange({ startDate: day, endDate: day });
+    }
 
-      if (isAfter(day, startDate)) {
-        setEndDate(day);
-      }
+    if (isAfter(day, startDate)) {
+      onChange({ startDate, endDate: day });
+    }
 
-      if (isBefore(day, startDate)) {
-        setStartDate(day);
-      }
-    },
-    [endDate, startDate]
-  );
+    if (isBefore(day, startDate)) {
+      onChange({ startDate: day, endDate });
+    }
+  };
 
   return (
     <div className="pt-20">
