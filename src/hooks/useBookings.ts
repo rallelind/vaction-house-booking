@@ -10,8 +10,8 @@ const fetcher = async (url: string) => {
   }
 };
 
-export default function useBookings(id: string) {
-  const { data, error, isLoading, mutate } = useSWR(`bookings/${id}`, fetcher);
+export default function useBookings(houseId: string) {
+  const { data, error, isLoading, mutate } = useSWR(`bookings/${houseId}`, fetcher);
 
   return {
     bookings: data,

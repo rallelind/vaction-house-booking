@@ -29,9 +29,10 @@ interface CalendarProps {
     endDate: Date;
   };
   onChange: (dates: { startDate: Date; endDate: Date }) => void;
+  bookings: [{ startDate: Date; endDate: Date }];
 }
 
-export default function Calendar({ dates, onChange }: CalendarProps) {
+export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
   let today = startOfToday();
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
@@ -66,6 +67,26 @@ export default function Calendar({ dates, onChange }: CalendarProps) {
       onChange({ startDate: day, endDate });
     }
   };
+
+  const dayDisabled = (day: Date) => {
+    return bookings.some((range) => {
+      const startDate = new Date(range.start_date);
+      const endDate = new Date(range.end_date);
+
+      // Check if day is within the interval (including start and end dates)
+      const withinInterval = isWithinInterval(day, {
+        start: startDate,
+        end: endDate,
+      });
+
+      console.log(startDate)
+      console.log(endDate)
+
+      return withinInterval
+    });
+  };
+
+  console.log(dayDisabled(new Date("2023-07-19")));
 
   return (
     <div className="pt-20">
@@ -140,6 +161,7 @@ export default function Calendar({ dates, onChange }: CalendarProps) {
                 >
                   <button
                     type="button"
+                    disabled={dayDisabled(day)}
                     onClick={() => handleSelectedDay(day)}
                     className={classNames(
                       isEqual(day, startDate) &&
