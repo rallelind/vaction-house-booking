@@ -1,7 +1,6 @@
 "use client";
-import useUser from "@/hooks/useUser";
 import Avatar from "@/components/ui/Avatar";
-import { useAuth, useSession } from "@clerk/nextjs";
+import { useSession } from "@clerk/nextjs";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const { session } = useSession();

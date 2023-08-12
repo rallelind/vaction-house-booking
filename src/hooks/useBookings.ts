@@ -1,9 +1,10 @@
 import useSWR from "swr";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import { BookingResponseData } from "@/shared.types";
 
 const fetcher = async (url: string) => {
   try {
-    const response = await apiWrapper(url, { method: "GET" });
+    const response = await apiWrapper<BookingResponseData[]>(url, { method: "GET" });
     return response;
   } catch (error) {
     throw error;

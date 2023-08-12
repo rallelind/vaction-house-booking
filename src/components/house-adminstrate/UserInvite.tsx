@@ -2,7 +2,12 @@
 import { FC, useRef } from "react";
 import { useState, KeyboardEvent } from "react";
 import { XMarkIcon, UserIcon } from "@heroicons/react/24/outline";
-import { MultiSelectInterface } from "../types";
+
+interface MultiSelectInterface {
+  label: string;
+  description?: string;
+  onChangeUsers: (value: string[]) => void;
+}
 
 const UserInvite: FC<MultiSelectInterface> = ({
   label,

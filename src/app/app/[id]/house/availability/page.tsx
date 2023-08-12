@@ -41,7 +41,7 @@ export default function Application() {
   return (
     <main>
       <div>
-        <Calendar bookings={bookings} onChange={setDates} dates={dates} />
+        <Calendar bookings={bookings || []} onChange={setDates} dates={dates} />
         <button onClick={submitBooking}>Create booking</button>
       </div>
     </main>

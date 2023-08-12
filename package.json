@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.23.1",
+    "@clerk/types": "^3.49.0",
     "@googlemaps/js-api-loader": "^1.16.2",
     "@headlessui/react": "^1.7.15",
     "@heroicons/react": "^2.0.18",

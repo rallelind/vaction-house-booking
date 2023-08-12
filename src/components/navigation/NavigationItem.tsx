@@ -1,6 +1,11 @@
-import { FC } from "react";
+import { FC, ReactNode } from "react";
 import Link from "next/link";
-import { NavigationItemInterface } from "../types";
+
+interface NavigationItemInterface {
+  icon: ReactNode;
+  text: string;
+  href: string;
+}
 
 const NavigationItem: FC<NavigationItemInterface> = ({ icon, text, href }) => {
   return (

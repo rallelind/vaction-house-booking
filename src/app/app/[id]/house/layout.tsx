@@ -9,7 +9,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { ReactNode } from "react";
 import Link from "next/link";
-import useUser from "@/hooks/useUser";
 import NavigationItem from "@/components/navigation/NavigationItem";
 import Avatar from "@/components/ui/Avatar";
 import { useSession } from "@clerk/nextjs";
@@ -26,7 +25,7 @@ export default function ApplicationLayout({
 
   const { id } = useParams();
 
-  const { house, houseLoading } = useHouse(id);
+  const { house, houseLoading, houseError } = useHouse(id);
 
   if (houseLoading) {
     return (
@@ -53,28 +52,28 @@ export default function ApplicationLayout({
             <ul>
               {houseAdmin && (
                 <NavigationItem
-                  href={`/app/${house.id}/house/adminstrate`}
+                  href={`/app/${house?.id}/house/adminstrate`}
                   icon={<Cog6ToothIcon className="h-6 lg:mr-3" />}
                   text="Adminstrer huset"
                 />
               )}
               <NavigationItem
-                href={`/app/${house.id}/house/bookings`}
+                href={`/app/${house?.id}/house/bookings`}
                 icon={<HomeModernIcon className="h-6 lg:mr-3" />}
                 text="Bookinger"
               />
               <NavigationItem
-                href={`/app/${house.id}/house/trips`}
+                href={`/app/${house?.id}/house/trips`}
                 icon={<MapIcon className="h-6 lg:mr-3" />}
                 text="Dine ture"
               />
               <NavigationItem
-                href={`/app/${house.id}/house/availability`}
+                href={`/app/${house?.id}/house/availability`}
                 icon={<CalendarDaysIcon className="h-6 lg:mr-3" />}
                 text="Tjek ledighed"
               />
               <NavigationItem
-                href={`/app/${house.id}/house/your-family`}
+                href={`/app/${house?.id}/house/your-family`}
                 icon={<UsersIcon className="h-6 lg:mr-3" />}
                 text="Din familie"
               />

@@ -17,7 +17,8 @@ import {
   isWithinInterval,
 } from "date-fns";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { useState, useCallback } from "react";
+import { useState } from "react";
+import { BookingResponseData } from "@/shared.types";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -29,7 +30,7 @@ interface CalendarProps {
     endDate: Date;
   };
   onChange: (dates: { startDate: Date; endDate: Date }) => void;
-  bookings: [{ startDate: Date; endDate: Date }];
+  bookings: BookingResponseData[];
 }
 
 export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
@@ -68,25 +69,64 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
     }
   };
 
-  const dayDisabled = (day: Date) => {
+  const dayBooked = (day: Date) => {
     return bookings.some((range) => {
-      const startDate = new Date(range.start_date);
-      const endDate = new Date(range.end_date);
+      const { start_date, end_date } = range.booking;
 
-      // Check if day is within the interval (including start and end dates)
+      const startDate = new Date(start_date);
+      const endDate = new Date(end_date);
+
       const withinInterval = isWithinInterval(day, {
         start: startDate,
         end: endDate,
       });
 
-      console.log(startDate)
-      console.log(endDate)
+      const isStartDateEqual = isSameDay(day, startDate);
 
-      return withinInterval
+      return withinInterval || isStartDateEqual;
     });
   };
 
-  console.log(dayDisabled(new Date("2023-07-19")));
+  const startDateRange = (day: Date) => {
+    return bookings.some((range) => {
+      const { start_date } = range.booking;
+      const startDate = new Date(start_date);
+
+      const isStartDateEqual = isSameDay(day, startDate);
+
+      return isStartDateEqual;
+    });
+  };
+
+  const endDateRange = (day: Date) => {
+    return bookings.some((range) => {
+      const { end_date } = range.booking;
+
+      const endDate = new Date(end_date);
+
+      const isEndDateEqual = isSameDay(day, endDate);
+
+      return isEndDateEqual;
+    });
+  };
+
+  const findUserBooking = (day: Date) => {
+    return bookings.find((range) => {
+      const { start_date, end_date } = range.booking;
+
+      const startDate = new Date(start_date);
+      const endDate = new Date(end_date);
+
+      const withinInterval = isWithinInterval(day, {
+        start: startDate,
+        end: endDate,
+      });
+
+      const isStartDateEqual = isSameDay(day, startDate);
+
+      return withinInterval || isStartDateEqual;
+    });
+  };
 
   return (
     <div className="pt-20">
@@ -128,9 +168,12 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                 <div
                   key={day.toString()}
                   className={classNames(
+                    endDateRange(day) && "rounded-r-full",
+                    startDateRange(day) && "rounded-l-full",
+                    dayBooked(day) && "bg-orange-200",
                     isWithinInterval(day, { start: startDate, end: endDate }) &&
                       !isEqual(endDate, startDate) &&
-                      "bg-orange-100",
+                      "bg-orange-100 z-0 relative",
                     !isWithinInterval(day, {
                       start: startDate,
                       end: endDate,
@@ -156,12 +199,21 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                     isEqual(day, startDate) &&
                       isEqual(day, endDate) &&
                       "font-semibold",
-                    "mx-auto flex h-10 items-center justify-center w-full"
+                    "mx-auto flex h-10 items-center justify-center w-full relative z-0 mb-2"
                   )}
                 >
+                  {startDateRange(day) && (
+                    <div className="absolute left-[-3px] top-[-5px] w-6 h-6 z-100">
+                      <img
+                        className="w-6 h-6 rounded-full"
+                        alt="user"
+                        src={findUserBooking(day)?.user.profile_image_url}
+                      />
+                    </div>
+                  )}
                   <button
                     type="button"
-                    disabled={dayDisabled(day)}
+                    disabled={dayBooked(day)}
                     onClick={() => handleSelectedDay(day)}
                     className={classNames(
                       isEqual(day, startDate) &&

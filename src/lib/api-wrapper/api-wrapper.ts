@@ -1,9 +1,9 @@
 import { getCookie } from "cookies-next";
 
-export default async function apiWrapper(
+export default async function apiWrapper<T>(
   endpoint: string,
   request: RequestInit
-) {
+): Promise<T> {
   const sessionCookie = getCookie("__session");
 
   try {

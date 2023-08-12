@@ -1,10 +1,10 @@
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
-import { House } from "@/lib/api-wrapper/types";
+import { House } from "@/shared.types";
 import useSWR from "swr";
 
 const fetcher = async (url: string) => {
   try {
-    const housesResponse = await apiWrapper(url, { method: "GET" });
+    const housesResponse = await apiWrapper<House[]>(url, { method: "GET" });
     return housesResponse;
   } catch (error) {
     throw error;
@@ -15,7 +15,7 @@ export default function useHouses() {
   const { data, error, isLoading, mutate } = useSWR("house", fetcher);
 
   return {
-    houses: data as House[],
+    houses: data,
     housesError: error,
     housesIsloading: isLoading,
     mutateHouses: mutate,

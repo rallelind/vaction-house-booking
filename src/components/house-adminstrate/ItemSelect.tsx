@@ -1,6 +1,12 @@
-import { FC } from "react";
-import { ItemSelectInterface } from "../types";
+import { FC, ReactNode} from "react";
 import { CheckIcon } from "@heroicons/react/24/outline";
+
+interface ItemSelectInterface {
+  selected: boolean;
+  icon: ReactNode;
+  description: string;
+  title: string;
+}
 
 const ItemSelect: FC<ItemSelectInterface> = ({
   description,
