@@ -203,9 +203,9 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                   )}
                 >
                   {startDateRange(day) && (
-                    <div className="absolute left-[-3px] top-[-5px] w-6 h-6 z-100">
+                    <div className="absolute left-[-3px] top-[-5px] w-6 h-6 z-100 ">
                       <img
-                        className="w-6 h-6 rounded-full"
+                        className="w-6 h-6 rounded-full border-2 border-orange-200 z-100"
                         alt="user"
                         src={findUserBooking(day)?.user.profile_image_url}
                       />
