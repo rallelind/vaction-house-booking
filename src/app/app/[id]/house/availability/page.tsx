@@ -101,8 +101,8 @@ export default function Application() {
                   onMouseLeave={() => setHoveredBooking(null)}
                 >
                   <Avatar
-                    height="12"
-                    width="12"
+                    height={12}
+                    width={12}
                     avatarUrl={booking.user.profile_image_url}
                   />
                   <div className="ml-4">
