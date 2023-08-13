@@ -2,13 +2,14 @@
 import useBookings from "@/hooks/useBookings";
 import useHouse from "@/hooks/useHouse";
 import { useParams } from "next/navigation";
+import useTodaysBooking from "@/hooks/useTodaysBooking";
 
 export default function Application() {
   const { id } = useParams();
   const { house, houseError, houseLoading } = useHouse(id);
-  const { bookings, bookingsError, bookingsLoading } = useBookings(id);
+  const { todaysBooking } = useTodaysBooking(id);
 
-  console.log(bookings)
+  console.log(todaysBooking);
 
   return (
     <div>
