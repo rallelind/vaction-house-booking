@@ -56,6 +56,10 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
   }
 
   const handleSelectedDay = (day: Date) => {
+    if (!startDate || !endDate) {
+      onChange({ startDate: day, endDate: day });
+    }
+
     if (isEqual(day, startDate) || isEqual(day, endDate)) {
       onChange({ startDate: day, endDate: day });
     }
@@ -129,8 +133,8 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
   };
 
   return (
-    <div className="pt-20">
-      <div className="max-w-md px-4 mx-auto sm:px-7 md:max-w-4xl md:px-6">
+    <div>
+      <div className="max-w-md md:max-w-4xl">
         <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
           <div className="md:pr-14">
             <div className="flex items-center">
@@ -171,21 +175,30 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                     endDateRange(day) && "rounded-r-full",
                     startDateRange(day) && "rounded-l-full",
                     dayBooked(day) && "bg-orange-200",
-                    isWithinInterval(day, { start: startDate, end: endDate }) &&
+                    !!startDate &&
+                      !!endDate &&
+                      isWithinInterval(day, {
+                        start: startDate,
+                        end: endDate,
+                      }) &&
                       !isEqual(endDate, startDate) &&
                       "bg-orange-100 z-0 relative",
-                    !isWithinInterval(day, {
-                      start: startDate,
-                      end: endDate,
-                    }) &&
+                    !!startDate &&
+                      !!endDate &&
+                      !isWithinInterval(day, {
+                        start: startDate,
+                        end: endDate,
+                      }) &&
                       !isEqual(day, startDate) &&
                       !isEqual(day, endDate) &&
                       isSameMonth(day, firstDayCurrentMonth) &&
                       "text-gray-900",
-                    !isWithinInterval(day, {
-                      start: startDate,
-                      end: endDate,
-                    }) &&
+                    !!startDate &&
+                      !!endDate &&
+                      !isWithinInterval(day, {
+                        start: startDate,
+                        end: endDate,
+                      }) &&
                       !isEqual(day, startDate) &&
                       !isEqual(day, endDate) &&
                       !isSameMonth(day, firstDayCurrentMonth) &&
@@ -199,7 +212,7 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                     isEqual(day, startDate) &&
                       isEqual(day, endDate) &&
                       "font-semibold",
-                    "mx-auto flex h-10 items-center justify-center w-full relative z-0 mb-2"
+                    "mx-auto flex h-10 items-center justify-center w-full relative z-0 mb-4"
                   )}
                 >
                   {startDateRange(day) && (
@@ -213,7 +226,7 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                   )}
                   <button
                     type="button"
-                    disabled={dayBooked(day)}
+                    disabled={dayBooked(day) || isBefore(day, today)}
                     onClick={() => handleSelectedDay(day)}
                     className={classNames(
                       isEqual(day, startDate) &&
@@ -225,7 +238,7 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
                       isEqual(day, endDate) &&
                         !isEqual(day, startDate) &&
                         "bg-orange-200 text-white rounded-full",
-                      "w-full h-full hover:border-2 hover:border-black hover:rounded-full"
+                      "w-full h-full hover:border-2 hover:border-black hover:rounded-full disabled:text-white"
                     )}
                   >
                     <time dateTime={format(day, "yyyy-MM-dd")}>
