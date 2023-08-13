@@ -24,6 +24,7 @@ import {
   endDateRange,
   startDateRange,
   dayBooked,
+  highlightBooking,
 } from "./calendar-helper-functions";
 import useBookings from "@/hooks/useBookings";
 import { useParams } from "next/navigation";
@@ -38,17 +39,19 @@ interface CalendarProps {
     endDate: Date;
   };
   onChange: (dates: { startDate: Date; endDate: Date }) => void;
-  bookings: BookingResponseData[];
+  highlightedBooking: number;
 }
 
 const CalendarDays = ({
   month,
   dates,
   onChange,
+  highlightedBooking,
 }: {
   month: Date;
   dates: { startDate: Date; endDate: Date };
   onChange: (dates: { startDate: Date; endDate: Date }) => void;
+  highlightedBooking: number;
 }) => {
   let days = eachDayOfInterval({
     start: month,
@@ -102,7 +105,9 @@ const CalendarDays = ({
             className={classNames(
               endDateRange(day, bookings) && "rounded-r-full",
               startDateRange(day, bookings) && "rounded-l-full",
-              dayBooked(day, bookings) && "bg-orange-200",
+              highlightBooking(day, bookings, highlightedBooking)
+                ? "bg-orange-300"
+                : dayBooked(day, bookings) && "bg-orange-200",
               !!startDate &&
                 !!endDate &&
                 isWithinInterval(day, {
@@ -166,7 +171,7 @@ const CalendarDays = ({
                 isEqual(day, endDate) &&
                   !isEqual(day, startDate) &&
                   "bg-orange-200 text-white rounded-full",
-                "w-full h-full hover:border-2 hover:border-black hover:rounded-full disabled:text-white"
+                "w-full h-full hover:border-2 hover:border-black hover:rounded-full disabled:text-white hover:disabled:border-none"
               )}
             >
               <time dateTime={format(day, "yyyy-MM-dd")}>
@@ -180,7 +185,11 @@ const CalendarDays = ({
   );
 };
 
-export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
+export default function Calendar({
+  dates,
+  onChange,
+  highlightedBooking,
+}: CalendarProps) {
   let today = startOfToday();
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let firstDayCurrentMonth = parse(currentMonth, "MMM-yyyy", new Date());
@@ -197,47 +206,43 @@ export default function Calendar({ dates, onChange, bookings }: CalendarProps) {
   }
 
   return (
-    <div>
-      <div className="max-w-md md:max-w-4xl">
-        <div className="md:grid md:grid-cols-2 md:divide-x md:divide-gray-200">
-          <div className="md:pr-14">
-            <div className="flex items-center">
-              <h2 className="flex-auto font-semibold text-gray-900">
-                {format(firstDayCurrentMonth, "MMMM yyyy")}
-              </h2>
-              <button
-                type="button"
-                onClick={previousMonth}
-                className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">Previous month</span>
-                <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
-              </button>
-              <button
-                onClick={nextMonth}
-                type="button"
-                className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-              >
-                <span className="sr-only">Next month</span>
-                <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
-              </button>
-            </div>
-            <CalendarDays
-              onChange={onChange}
-              dates={dates}
-              month={firstDayCurrentMonth}
-            />
-            <h2 className="flex-auto font-semibold text-gray-900">
-                {format(firstDayNextMonth, "MMMM yyyy")}
-              </h2>
-            <CalendarDays
-              onChange={onChange}
-              dates={dates}
-              month={firstDayNextMonth}
-            />
-          </div>
-        </div>
+    <div className="md:pr-14">
+      <div className="flex items-center">
+        <h2 className="flex-auto font-semibold text-gray-900">
+          {format(firstDayCurrentMonth, "MMMM yyyy")}
+        </h2>
+        <button
+          type="button"
+          onClick={previousMonth}
+          className="-my-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+        >
+          <span className="sr-only">Previous month</span>
+          <ChevronLeftIcon className="w-5 h-5" aria-hidden="true" />
+        </button>
+        <button
+          onClick={nextMonth}
+          type="button"
+          className="-my-1.5 -mr-1.5 ml-2 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+        >
+          <span className="sr-only">Next month</span>
+          <ChevronRightIcon className="w-5 h-5" aria-hidden="true" />
+        </button>
       </div>
+      <CalendarDays
+        highlightedBooking={highlightedBooking}
+        onChange={onChange}
+        dates={dates}
+        month={firstDayCurrentMonth}
+      />
+      <h2 className="flex-auto font-semibold text-gray-900">
+        {format(firstDayNextMonth, "MMMM yyyy")}
+      </h2>
+      <CalendarDays
+        onChange={onChange}
+        dates={dates}
+        month={firstDayNextMonth}
+        highlightedBooking={highlightedBooking}
+      />
     </div>
   );
 }

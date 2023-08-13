@@ -59,3 +59,31 @@ export const findUserBooking = (day: Date, bookings: BookingResponseData[]) => {
     return withinInterval || isStartDateEqual;
   });
 };
+
+export const highlightBooking = (
+  day: Date,
+  bookings: BookingResponseData[],
+  highlightedBooking: number
+) => {
+  const booking = bookings.find((range) => {
+    const { id } = range.booking;
+
+    return id === highlightedBooking;
+  });
+
+  if (!booking) return;
+
+  const { start_date, end_date } = booking.booking;
+
+  const startDate = new Date(start_date);
+  const endDate = new Date(end_date);
+
+  const withinInterval = isWithinInterval(day, {
+    start: startDate,
+    end: endDate,
+  });
+
+  const isStartDateEqual = isSameDay(day, startDate);
+
+  return withinInterval || isStartDateEqual;
+};
