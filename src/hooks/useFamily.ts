@@ -12,7 +12,7 @@ const fetcher = async (url: string) => {
 };
 
 export default function useFamily() {
-  const { data, error, isLoading, mutate } = useSWR("family", fetcher);
+  const { data, error, isLoading, mutate } = useSWR<Family>("family", fetcher);
 
   return {
     family: data,

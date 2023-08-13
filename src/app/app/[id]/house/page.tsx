@@ -13,11 +13,11 @@ export default function Application() {
   return (
     <div>
       <div className="flex">
-        <div className="w-full m-4 p-4 rounded-lg border border-orange-200 bg-orange-50">
+        <div className="w-full m-4 p-4 rounded-lg bg-orange-50">
           <h1>{house?.house_name}</h1>
         </div>
-        <div className="w-full m-4 p-4 rounded-lg border border-orange-200 bg-orange-50">
-          <h1>{house.address}</h1>
+        <div className="w-full m-4 p-4 rounded-lg bg-orange-50">
+          <h1>{house?.address}</h1>
         </div>
       </div>
     </div>
