@@ -1,7 +1,12 @@
 import { BookingResponseData } from "@/shared.types";
 import { isWithinInterval, isSameDay } from "date-fns";
 
-export const dayBooked = (day: Date, bookings: BookingResponseData[]) => {
+export const dayBooked = (
+  day: Date,
+  bookings: BookingResponseData[] | undefined
+) => {
+  if (!bookings) return;
+
   return bookings.some((range) => {
     const { start_date, end_date } = range.booking;
 
@@ -19,7 +24,12 @@ export const dayBooked = (day: Date, bookings: BookingResponseData[]) => {
   });
 };
 
-export const startDateRange = (day: Date, bookings: BookingResponseData[]) => {
+export const startDateRange = (
+  day: Date,
+  bookings: BookingResponseData[] | undefined
+) => {
+  if (!bookings) return;
+
   return bookings.some((range) => {
     const { start_date } = range.booking;
     const startDate = new Date(start_date);
@@ -30,7 +40,12 @@ export const startDateRange = (day: Date, bookings: BookingResponseData[]) => {
   });
 };
 
-export const endDateRange = (day: Date, bookings: BookingResponseData[]) => {
+export const endDateRange = (
+  day: Date,
+  bookings: BookingResponseData[] | undefined
+) => {
+  if (!bookings) return;
+
   return bookings.some((range) => {
     const { end_date } = range.booking;
 
@@ -42,7 +57,12 @@ export const endDateRange = (day: Date, bookings: BookingResponseData[]) => {
   });
 };
 
-export const findUserBooking = (day: Date, bookings: BookingResponseData[]) => {
+export const findUserBooking = (
+  day: Date,
+  bookings: BookingResponseData[] | undefined
+) => {
+  if (!bookings) return;
+
   return bookings.find((range) => {
     const { start_date, end_date } = range.booking;
 
@@ -62,9 +82,11 @@ export const findUserBooking = (day: Date, bookings: BookingResponseData[]) => {
 
 export const highlightBooking = (
   day: Date,
-  bookings: BookingResponseData[],
+  bookings: BookingResponseData[] | undefined,
   highlightedBooking: number
 ) => {
+  if (!bookings) return;
+
   const booking = bookings.find((range) => {
     const { id } = range.booking;
 

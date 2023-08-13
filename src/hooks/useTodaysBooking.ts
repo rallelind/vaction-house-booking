@@ -7,6 +7,9 @@ const fetcher = async (url: string) => {
     const response = await apiWrapper<BookingResponseData>(url, {
       method: "GET",
     });
+
+    if (typeof response === "string") throw new Error("No bookings today");
+
     return response;
   } catch (error) {
     throw error;

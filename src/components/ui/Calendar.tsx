@@ -63,10 +63,6 @@ const CalendarDays = ({
   const { id } = useParams();
   const { bookings, bookingsError, bookingsLoading } = useBookings(id);
 
-  if (!bookings || bookingsError) {
-    return <h1>Sorry, error getting bookings</h1>;
-  }
-
   const { startDate, endDate } = dates;
 
   const handleSelectedDay = (day: Date) => {
