@@ -12,7 +12,7 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 export default function Application() {
   const { id } = useParams();
   const { bookings, bookingsLoading } = useBookings(id);
-  
+
   const [hoveredBooking, setHoveredBooking] = useState(null);
   const [dates, setDates] = useState({
     startDate: null,
@@ -89,14 +89,14 @@ export default function Application() {
               )}
           </div>
           <div className="w-full">
-            <h2 className="ml-4 font-normal text-2xl">
+            <h2 className="ml-4 font-semibold">
               Reserveringer af sommerhus
             </h2>
             <ul className="m-4">
               {bookings?.map((booking) => (
                 <li
                   key={booking.booking.id}
-                  className="flex bg-orange-50 p-4 mb-4 rounded-lg hover:bg-orange-100"
+                  className="flex bg-orange-50 p-4 mb-4 items-center rounded-lg hover:bg-orange-100"
                   onMouseEnter={() => setHoveredBooking(booking.booking.id)}
                   onMouseLeave={() => setHoveredBooking(null)}
                 >
@@ -109,10 +109,10 @@ export default function Application() {
                     <p className="font-semibold">
                       {booking.user.first_name} {booking.user.last_name}
                     </p>
-                    <div className="flex">
-                      <CalendarIcon className="h-6" />
-                      <p className="ml-2">
-                        {`${format(
+                    <div className="flex items-center">
+                      <CalendarIcon className="h-4" />
+                      <p className="ml-2 font-normal text-gray-700 text-sm">
+                        {`Booket fra ${format(
                           new Date(booking.booking.start_date),
                           "dd MMMM"
                         )} til ${format(
