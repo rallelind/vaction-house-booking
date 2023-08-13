@@ -152,7 +152,7 @@ const CalendarDays = ({
                   src={findUserBooking(day, bookings)?.user.profile_image_url}
                 />
               </div>
-            )}
+            )} 
             <button
               type="button"
               disabled={dayBooked(day, bookings) || isBefore(day, today)}

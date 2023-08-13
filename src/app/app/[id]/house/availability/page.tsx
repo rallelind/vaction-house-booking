@@ -11,7 +11,7 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 
 export default function Application() {
   const { id } = useParams();
-  const { bookings, bookingsLoading } = useBookings(id);
+  const { bookings, bookingsLoading, mutateBookings } = useBookings(id);
 
   const [hoveredBooking, setHoveredBooking] = useState(null);
   const [dates, setDates] = useState({
@@ -58,13 +58,17 @@ export default function Application() {
       house_id: Number(id),
     };
 
+    console.log(body);
+
     const createdBooking = await apiWrapper("booking", {
       method: "POST",
       body: JSON.stringify(body),
     });
-  };
 
-  console.log(bookings);
+    if (createdBooking) {
+      mutateBookings().then(() => setDates({ startDate: null, endDate: null }));
+    }
+  };
 
   return (
     <main>
@@ -89,9 +93,7 @@ export default function Application() {
               )}
           </div>
           <div className="w-full">
-            <h2 className="ml-4 font-semibold">
-              Reserveringer af sommerhus
-            </h2>
+            <h2 className="ml-4 font-semibold">Reserveringer af sommerhus</h2>
             <ul className="m-4">
               {bookings?.map((booking) => (
                 <li
