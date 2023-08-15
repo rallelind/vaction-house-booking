@@ -7,14 +7,16 @@ interface MultiSelectInterface {
   label: string;
   description?: string;
   onChangeUsers: (value: string[]) => void;
+  users?: string[];
 }
 
 const UserInvite: FC<MultiSelectInterface> = ({
   label,
   description,
   onChangeUsers,
+  users,
 }) => {
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<string[]>(users ? users : []);
   const [itemToAdd, setItemToAdd] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement>(null);

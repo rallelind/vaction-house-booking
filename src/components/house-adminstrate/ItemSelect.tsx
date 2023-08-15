@@ -1,4 +1,4 @@
-import { FC, ReactNode} from "react";
+import { FC, ReactNode } from "react";
 import { CheckIcon } from "@heroicons/react/24/outline";
 
 interface ItemSelectInterface {
@@ -27,9 +27,15 @@ const ItemSelect: FC<ItemSelectInterface> = ({
           <CheckIcon className="h-4" />
         </span>
       )}
-      <div className="flex justify-center mb-2">{icon}</div>
-      <h1 className="text-lg font-semibold">{title}</h1>
-      <p className="text-sm font-light">{description}</p>
+      <div className="flex items-center mb-2">
+        <div className="mr-4">
+          {icon}
+        </div>
+        <div className="text-left">
+          <h1 className="text-lg font-semibold">{title}</h1>
+          <p className="text-sm font-light">{description}</p>
+        </div>
+      </div>
     </button>
   );
 };
