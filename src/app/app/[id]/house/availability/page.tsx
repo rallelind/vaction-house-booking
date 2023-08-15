@@ -58,8 +58,6 @@ export default function Application() {
       house_id: Number(id),
     };
 
-    console.log(body);
-
     const createdBooking = await apiWrapper("booking", {
       method: "POST",
       body: JSON.stringify(body),
