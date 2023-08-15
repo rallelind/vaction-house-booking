@@ -5,10 +5,11 @@ import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
   PencilIcon,
+  PhotoIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Avatar from "@/components/ui/Avatar";
 import AddFamilyModalContent from "@/components/house-adminstrate/AddFamilyModalContent";
 import ImageUpload from "@/components/house-adminstrate/ImageUpload";
@@ -16,6 +17,8 @@ import { Tab } from "@headlessui/react";
 import useHouse from "@/hooks/useHouse";
 import useFamilies from "@/hooks/useFamilies";
 import { useParams } from "next/navigation";
+import { useDropzone } from "react-dropzone";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 export default function HouseAdminstration() {
   let [isOpen, setIsOpen] = useState(false);
@@ -24,12 +27,38 @@ export default function HouseAdminstration() {
   const { house, houseLoading, mutateHouse } = useHouse(id);
   const { families, familiesLoading, familiesError } = useFamilies(id);
 
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      // Do something with the files
+      const formData = new FormData();
+
+      for (const name in acceptedFiles) {
+        formData.append("file", acceptedFiles[name]);
+      }
+
+      const response = await apiWrapper(`house/${id}/images`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response) {
+        mutateHouse();
+      }
+    },
+    [id, mutateHouse]
+  );
+
+  console.log(house);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
   if (houseLoading || familiesLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <div className="w-full">
+      <h1 className="text-3xl mb-4 font-normal">Adminstrer huset</h1>
       <Tab.Group>
         <Tab.List className="bg-orange-50 p-2 rounded-lg">
           <Tab className="mr-4 ui-selected:bg-orange-200 ui-selected:font-medium pr-2 pl-2 rounded-lg focus:outline-none">
@@ -44,10 +73,34 @@ export default function HouseAdminstration() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel>
-            <div className="grid mt-4 grid-flow-col grid-cols-3 mb-6">
-              <ImageUpload />
-              <ImageUpload />
-              <ImageUpload />
+            <div {...getRootProps()} className="hover:cursor-pointer">
+              <input {...getInputProps()} />
+              <div className="w-full flex items-center font-semibold justify-center text-md mt-4 border-dashed bg-orange-50 border-2 border-orange-300 rounded-lg p-2">
+                <PhotoIcon className="h-10 mr-4" />
+                Upload et billede af huset
+              </div>
+            </div>
+            <div
+              className={`grid-cols-3 space-y-2 lg:space-y-0 lg:grid lg:gap-3 lg:grid-rows-3 mt-4`}
+            >
+              {house?.login_images?.map((img, i) => {
+                if (i % 6 === 0) {
+                  return (
+                    <div
+                      key={img}
+                      className="w-full col-start-1 col-span-2 row-span-2"
+                    >
+                      <img alt="hus billede" src={img} className="rounded-lg" />
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div key={img} className="w-full">
+                      <img alt="hus billede" src={img} className="rounded-lg" />
+                    </div>
+                  );
+                }
+              })}
             </div>
           </Tab.Panel>
           <Tab.Panel>
@@ -68,7 +121,10 @@ export default function HouseAdminstration() {
             </div>
             <ul>
               {families?.map((family) => (
-                <li key={family.id} className="border rounded-lg border-gray-200 p-2">
+                <li
+                  key={family.id}
+                  className="border rounded-lg border-gray-200 p-2"
+                >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="flex border-space-x-4">
