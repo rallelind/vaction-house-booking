@@ -134,7 +134,7 @@ export default function HouseAdminstration() {
                         <Avatar />
                         <Avatar />
                       </div>
-                      <p className="ml-4 font-medium">Familien Lind</p>
+                      <p className="ml-4 font-medium">{family.family_name}</p>
                     </div>
                     <button className="p-2 flex text-xs bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200">
                       <PencilIcon className="h-4 mr-2" />
