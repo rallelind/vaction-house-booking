@@ -72,7 +72,7 @@ export default function Application() {
     <main>
       <div className="max-w-md md:max-w-4xl h-full m-auto">
         <div className="md:grid md:grid-cols-2 grid-rows-1 md:divide-x md:divide-gray-200">
-          <div>
+          <div className="sticky top-0 h-0">
             <Calendar
               bookings={bookings || []}
               onChange={setDates}
