@@ -56,7 +56,7 @@ export default function HouseAdminstration() {
   }
 
   const changeBookingType = async (type: boolean) => {
-    const response = await apiWrapper(`house/${id}/admin_approval`, {
+    const response = await apiWrapper(`house/${id}/admin/approval`, {
       method: "PUT",
       body: JSON.stringify({
         admin_needs_to_approve: type,

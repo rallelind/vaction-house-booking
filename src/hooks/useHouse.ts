@@ -12,7 +12,15 @@ const fetcher = async (url: string) => {
 };
 
 export default function useHouse(id: string) {
-  const { data, error, isLoading, mutate } = useSWR<House>(`house/${id}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR<House>(
+    `house/${id}`,
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
 
   return {
     house: data,

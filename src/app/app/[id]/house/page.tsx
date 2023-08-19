@@ -6,6 +6,7 @@ import useTodaysBooking from "@/hooks/useTodaysBooking";
 import Avatar from "@/components/ui/Avatar";
 import format from "date-fns/format";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Application() {
   const { id } = useParams();
@@ -15,12 +16,25 @@ export default function Application() {
 
   const { push } = useRouter();
 
-  if (todaysBookingLoading || houseLoading) {
+  if (houseLoading || todaysBookingLoading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div>
+      <div className="flex">
+        <div className="w-full p-4 m-4 bg-orange-50 rounded-lg">
+          <div className="flex gap-4">
+            <h1>Velkommen til {house?.house_name}</h1>
+            <Image
+              height="100"
+              width="100"
+              src={house?.login_images[0]}
+              className="rounded-lg"
+            />
+          </div>
+        </div>
+      </div>
       <div className="flex">
         <div className="w-full m-4 p-4 rounded-lg bg-orange-50">
           <h1 className="font-semibold text-xl">

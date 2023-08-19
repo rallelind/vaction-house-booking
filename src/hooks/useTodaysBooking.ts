@@ -19,7 +19,12 @@ const fetcher = async (url: string) => {
 export default function useTodaysBooking(houseId: string) {
   const { data, error, isLoading, mutate } = useSWR<BookingResponseData>(
     `booking/${houseId}/today`,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
   );
 
   return {

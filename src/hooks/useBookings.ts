@@ -16,7 +16,12 @@ const fetcher = async (url: string) => {
 export default function useBookings(houseId: string) {
   const { data, error, isLoading, mutate } = useSWR<BookingResponseData[]>(
     `bookings/${houseId}`,
-    fetcher
+    fetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
 
   return {
