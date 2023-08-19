@@ -12,7 +12,6 @@ import { Dialog } from "@headlessui/react";
 import { useState, useCallback } from "react";
 import Avatar from "@/components/ui/Avatar";
 import AddFamilyModalContent from "@/components/house-adminstrate/AddFamilyModalContent";
-import ImageUpload from "@/components/house-adminstrate/ImageUpload";
 import { Tab } from "@headlessui/react";
 import useHouse from "@/hooks/useHouse";
 import useFamilies from "@/hooks/useFamilies";
@@ -56,6 +55,31 @@ export default function HouseAdminstration() {
     return <p>Loading...</p>;
   }
 
+  const changeBookingType = async (type: boolean) => {
+    const response = await apiWrapper(`house/${id}/admin_approval`, {
+      method: "PUT",
+      body: JSON.stringify({
+        admin_needs_to_approve: type,
+      }),
+    });
+
+    if (response) {
+      mutateHouse();
+    }
+  };
+
+  const changeAdminUsers = async (users: string[]) => {
+    const response = await apiWrapper(`house/${id}/admin/users`, {
+      method: "PUT",
+      body: JSON.stringify({
+        house_admins: users,
+      }),
+    });
+    if (response) {
+      mutateHouse();
+    }
+  };
+
   return (
     <div className="w-full">
       <h1 className="text-3xl mb-4 font-normal">Adminstrer huset</h1>
@@ -75,8 +99,8 @@ export default function HouseAdminstration() {
           <Tab.Panel>
             <div {...getRootProps()} className="hover:cursor-pointer">
               <input {...getInputProps()} />
-              <div className="w-full flex items-center font-semibold justify-center text-md mt-4 border-dashed bg-orange-50 border-2 border-orange-300 rounded-lg p-2">
-                <PhotoIcon className="h-10 mr-4" />
+              <div className="w-full flex items-center font-semibold justify-center text-md mt-4 border-dashed bg-orange-50 border border-orange-300 rounded-lg p-2">
+                <PhotoIcon className="h-8 mr-4" />
                 Upload et billede af huset
               </div>
             </div>
@@ -113,32 +137,30 @@ export default function HouseAdminstration() {
               </div>
               <button
                 onClick={() => setIsOpen(true)}
-                className="p-2 flex bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200"
+                className="p-2 flex text-sm items-center bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200"
               >
-                <UserPlusIcon className="h-6 mr-2" />
+                <UserPlusIcon className="h-4 mr-2" />
                 <p>Tilføj familie</p>
               </button>
             </div>
+            <hr className="mb-8" />
             <ul>
               {families?.map((family) => (
                 <li
                   key={family.id}
-                  className="border rounded-lg border-gray-200 p-2"
+                  className="border rounded-lg border-gray-200 p-2 mt-4"
                 >
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="flex border-space-x-4">
-                        <Avatar />
-                        <Avatar />
-                        <Avatar />
-                        <Avatar />
-                        <Avatar />
+                        {family?.family_members?.map((member) => (
+                          <Avatar key={member} />
+                        ))}
                       </div>
                       <p className="ml-4 font-medium">{family.family_name}</p>
                     </div>
                     <button className="p-2 flex text-xs bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200">
-                      <PencilIcon className="h-4 mr-2" />
-                      <p>Ændre detaljer</p>
+                      <PencilIcon className="h-4" />
                     </button>
                   </div>
                 </li>
@@ -150,7 +172,8 @@ export default function HouseAdminstration() {
               <UserInvite
                 label="Admin brugere"
                 users={house?.house_admins}
-                onChangeUsers={() => mutateHouse()}
+                onChangeUsers={(value) => changeAdminUsers(value)}
+                onDeleteUser={(value) => changeAdminUsers(value)}
                 description="Tilføj admin brugere. Admin brugere kan ændre i alt adminstrativt omkring huset."
               />
             </div>
@@ -167,12 +190,14 @@ export default function HouseAdminstration() {
                 title="Åben booking"
                 icon={<EnvelopeOpenIcon className="h-10" />}
                 selected={!house?.admin_needs_to_approve}
+                onClick={() => changeBookingType(false)}
               />
               <ItemSelect
                 description="Lukket booking gør at alle bookinger skal accepteres af en admin"
                 title="Lukket booking"
                 icon={<EnvelopeIcon className="h-10 text-center" />}
                 selected={!!house?.admin_needs_to_approve}
+                onClick={() => changeBookingType(true)}
               />
             </div>
           </Tab.Panel>

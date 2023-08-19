@@ -7,6 +7,7 @@ interface MultiSelectInterface {
   label: string;
   description?: string;
   onChangeUsers: (value: string[]) => void;
+  onDeleteUser: (value: string[]) => void;
   users?: string[];
 }
 
@@ -15,6 +16,7 @@ const UserInvite: FC<MultiSelectInterface> = ({
   description,
   onChangeUsers,
   users,
+  onDeleteUser,
 }) => {
   const [items, setItems] = useState<string[]>(users ? users : []);
   const [itemToAdd, setItemToAdd] = useState<string>("");
@@ -35,7 +37,11 @@ const UserInvite: FC<MultiSelectInterface> = ({
   };
 
   const removeItem = (item: string) => {
-    setItems((prevItems) => prevItems.filter((prevItem) => prevItem !== item));
+    setItems((prevItems) => {
+      const newItems = prevItems.filter((prevItem) => prevItem !== item);
+      onDeleteUser(newItems);
+      return newItems;
+    });
   };
 
   const handleOuterInputClick = () => {

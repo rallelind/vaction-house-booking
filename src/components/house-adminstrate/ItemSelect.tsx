@@ -6,6 +6,7 @@ interface ItemSelectInterface {
   icon: ReactNode;
   description: string;
   title: string;
+  onClick: () => void;
 }
 
 const ItemSelect: FC<ItemSelectInterface> = ({
@@ -13,9 +14,11 @@ const ItemSelect: FC<ItemSelectInterface> = ({
   icon,
   selected,
   title,
+  onClick,
 }) => {
   return (
     <button
+      onClick={onClick}
       className={`${
         selected
           ? "border-solid border border-orange-200 bg-orange-100 hover:bg-orange-50"
@@ -28,9 +31,7 @@ const ItemSelect: FC<ItemSelectInterface> = ({
         </span>
       )}
       <div className="flex items-center mb-2">
-        <div className="mr-4">
-          {icon}
-        </div>
+        <div className="mr-4">{icon}</div>
         <div className="text-left">
           <h1 className="text-lg font-semibold">{title}</h1>
           <p className="text-sm font-light">{description}</p>

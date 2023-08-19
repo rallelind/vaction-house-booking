@@ -52,6 +52,7 @@ const AddFamilyModalContent = ({ onClose }: { onClose: () => void }) => {
         <UserInvite
           label="Tilføj familie medlemmer"
           onChangeUsers={setFamilyMembers}
+      
         />
       </div>
 
