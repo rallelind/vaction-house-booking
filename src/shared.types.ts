@@ -27,7 +27,7 @@ export interface BookingResponseData {
 export interface Family {
   id: number;
   family_name: string;
-  family_members: string[];
+  members: string[];
   house_id: string;
 }
 

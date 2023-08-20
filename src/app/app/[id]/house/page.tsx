@@ -6,6 +6,7 @@ import useTodaysBooking from "@/hooks/useTodaysBooking";
 import Avatar from "@/components/ui/Avatar";
 import format from "date-fns/format";
 import { useRouter } from "next/navigation";
+import useUserFamily from "@/hooks/useUserFamily";
 
 export default function Application() {
   const { id } = useParams();
@@ -13,11 +14,15 @@ export default function Application() {
   const { todaysBooking, todaysBookingLoading, todaysBookingError } =
     useTodaysBooking(id);
 
+  const { userFamilyError, userFamily, userFamilyLoading } = useUserFamily(id);
+
   const { push } = useRouter();
 
-  if (houseLoading || todaysBookingLoading) {
+  if (houseLoading || todaysBookingLoading || userFamilyLoading) {
     return <div>Loading...</div>;
   }
+
+  console.log(userFamily);
 
   return (
     <div>
@@ -85,8 +90,22 @@ export default function Application() {
             </button>
           </div>
         </div>
-        <div className="w-full m-4 p-4 rounded-lg bg-orange-50">
-          <h1>{house?.address}</h1>
+        <div className="w-full m-4 p-4 rounded-lg bg-orange-50 h-full">
+          <h1 className="font-semibold text-xl">
+            Familien {userFamily?.family_name}
+          </h1>
+          <p className="font-normal text-gray-700 text-sm mb-auto">
+            Du er en del af familien {userFamily?.family_name}
+          </p>
+          <hr className="mt-4 mb-4" />
+          <div className="flex justify-center items-center">
+            <button
+              onClick={() => push(`/app/${id}/house/your-family`)}
+              className="p-2 bg-slate-800 font-semibold pl-4 pr-4 text-sm rounded-full text-white"
+            >
+              Se din familie her
+            </button>
+          </div>
         </div>
       </div>
     </div>
