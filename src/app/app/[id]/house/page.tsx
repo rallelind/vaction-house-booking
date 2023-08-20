@@ -6,7 +6,6 @@ import useTodaysBooking from "@/hooks/useTodaysBooking";
 import Avatar from "@/components/ui/Avatar";
 import format from "date-fns/format";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 
 export default function Application() {
   const { id } = useParams();
@@ -23,15 +22,25 @@ export default function Application() {
   return (
     <div>
       <div className="flex">
-        <div className="w-full p-4 m-4 bg-orange-50 rounded-lg">
-          <div className="flex gap-4">
-            <h1>Velkommen til {house?.house_name}</h1>
-            <Image
-              height="100"
-              width="100"
-              src={house?.login_images[0]}
-              className="rounded-lg"
-            />
+        <div className="w-full p-4 m-4">
+          <div>
+            <h1 className="text-center text-4xl mb-20">
+              Velkommen til {house?.address}
+            </h1>
+            <div className="flex gap-4 justify-center">
+              <img
+                src={house?.login_images[0]}
+                className="h-44 rounded-lg rotate-[-15deg] border-4 border-orange-50 shadow-lg"
+              />
+              <img
+                src={house?.login_images[1]}
+                className="h-60 rounded-lg shadow-lg rotate-[-4deg] border-4 border-orange-50"
+              />
+              <img
+                src={house?.login_images[2]}
+                className="h-40 rounded-lg rotate-[15deg] mt-auto shadow-lg border-4 border-orange-50"
+              />
+            </div>
           </div>
         </div>
       </div>

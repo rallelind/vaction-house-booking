@@ -24,6 +24,7 @@ export default function useTodaysBooking(houseId: string) {
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
+      refreshInterval: 0,
     }
   );
 

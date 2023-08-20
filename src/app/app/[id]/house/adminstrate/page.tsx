@@ -20,7 +20,8 @@ import { useDropzone } from "react-dropzone";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 export default function HouseAdminstration() {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [editFamilyMode, setEditFamilyMode] = useState(false);
   const { id } = useParams();
 
   const { house, houseLoading, mutateHouse } = useHouse(id);
@@ -159,7 +160,10 @@ export default function HouseAdminstration() {
                       </div>
                       <p className="ml-4 font-medium">{family.family_name}</p>
                     </div>
-                    <button className="p-2 flex text-xs bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200">
+                    <button
+                      onClick={() => setIsOpen(true)}
+                      className="p-2 flex text-xs bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200"
+                    >
                       <PencilIcon className="h-4" />
                     </button>
                   </div>
