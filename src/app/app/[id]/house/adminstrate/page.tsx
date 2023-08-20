@@ -18,10 +18,14 @@ import useFamilies from "@/hooks/useFamilies";
 import { useParams } from "next/navigation";
 import { useDropzone } from "react-dropzone";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import { Family } from "@/shared.types";
 
 export default function HouseAdminstration() {
   const [isOpen, setIsOpen] = useState(false);
   const [editFamilyMode, setEditFamilyMode] = useState(false);
+  const [familyToEdit, setFamilyToEdit] = useState<Family | undefined>(
+    undefined
+  );
   const { id } = useParams();
 
   const { house, houseLoading, mutateHouse } = useHouse(id);
@@ -47,8 +51,6 @@ export default function HouseAdminstration() {
     },
     [id, mutateHouse]
   );
-
-  console.log(house);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
@@ -79,6 +81,18 @@ export default function HouseAdminstration() {
     if (response) {
       mutateHouse();
     }
+  };
+
+  const openEditFamily = (family: Family) => {
+    setEditFamilyMode(true);
+    setIsOpen(true);
+    setFamilyToEdit(family);
+  };
+
+  const onCloseModal = () => {
+    setIsOpen(false);
+    setFamilyToEdit(undefined);
+    setEditFamilyMode(false);
   };
 
   return (
@@ -154,14 +168,14 @@ export default function HouseAdminstration() {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="flex border-space-x-4">
-                        {family?.family_members?.map((member) => (
+                        {family?.members?.map((member) => (
                           <Avatar key={member} />
                         ))}
                       </div>
                       <p className="ml-4 font-medium">{family.family_name}</p>
                     </div>
                     <button
-                      onClick={() => setIsOpen(true)}
+                      onClick={() => openEditFamily(family)}
                       className="p-2 flex text-xs bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200"
                     >
                       <PencilIcon className="h-4" />
@@ -207,11 +221,15 @@ export default function HouseAdminstration() {
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <Dialog open={isOpen} onClose={onCloseModal}>
         <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
         <div className="fixed inset-0 flex justify-center items-start mt-20">
           <Dialog.Panel className="bg-white p-6 rounded-lg w-[50%]">
-            <AddFamilyModalContent onClose={() => setIsOpen(false)} />
+            <AddFamilyModalContent
+              familyToEdit={familyToEdit}
+              editFamilyMode={editFamilyMode}
+              onClose={onCloseModal}
+            />
           </Dialog.Panel>
         </div>
       </Dialog>

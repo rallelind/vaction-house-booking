@@ -1,17 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import UserInvite from "./UserInvite";
 import { Dialog } from "@headlessui/react";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 import useFamilies from "@/hooks/useFamilies";
 import { useParams } from "next/navigation";
+import useHouse from "@/hooks/useHouse";
+import { Family } from "@/shared.types";
 
-const AddFamilyModalContent = ({ onClose }: { onClose: () => void }) => {
+const AddFamilyModalContent = ({
+  onClose,
+  editFamilyMode,
+  familyToEdit,
+}: {
+  onClose: () => void;
+  editFamilyMode?: boolean;
+  familyToEdit?: Family;
+}) => {
   const [familyMembers, setFamilyMembers] = useState<string[]>([]);
   const [familyName, setFamilyName] = useState<string>("");
 
   const { id } = useParams();
   const { mutateFamilies } = useFamilies(id);
+  const { house } = useHouse(id);
 
   const createFamily = async () => {
     const response = await apiWrapper("family", {
@@ -31,10 +42,11 @@ const AddFamilyModalContent = ({ onClose }: { onClose: () => void }) => {
   return (
     <>
       <Dialog.Title className="text-xl font-semibold">
-        Tilføj en familie til havklitvej 60
+        {editFamilyMode ? "Ændre" : "Tilføj en"} familie til {house?.address}
       </Dialog.Title>
       <Dialog.Description className="text-md font-light">
-        Venligst tilføj familie medlemmer og navn på familien!
+        {editFamilyMode ? "Ændre" : "Venligst tilføj"} familie medlemmer og navn
+        på familien!
       </Dialog.Description>
 
       <div className="mt-4">
@@ -43,13 +55,15 @@ const AddFamilyModalContent = ({ onClose }: { onClose: () => void }) => {
         </label>
         <input
           className="outline-0 rounded-md bg-gray-50 border border-gray-300 text-gray-900 w-1/2 p-2"
-          placeholder="Familiens kalde navn..."
+          placeholder={"Familiens kalde navn..."}
           onChange={(e) => setFamilyName(e.target.value)}
+          defaultValue={familyToEdit ? familyToEdit.family_name : ""}
         />
       </div>
 
       <div className="mt-4">
         <UserInvite
+          users={familyToEdit?.members || []}
           label="Tilføj familie medlemmer"
           onChangeUsers={setFamilyMembers}
         />

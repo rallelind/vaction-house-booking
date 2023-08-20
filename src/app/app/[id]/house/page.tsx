@@ -22,28 +22,26 @@ export default function Application() {
     return <div>Loading...</div>;
   }
 
-  console.log(userFamily);
-
   return (
     <div>
       <div className="flex">
         <div className="w-full p-4 m-4">
           <div>
-            <h1 className="text-center text-4xl mb-20">
+            <h1 className="text-center text-4xl font-semibold mb-20">
               Velkommen til {house?.address}
             </h1>
             <div className="flex gap-4 justify-center">
               <img
                 src={house?.login_images[0]}
-                className="h-44 rounded-lg rotate-[-15deg] border-4 border-orange-50 shadow-lg"
+                className="h-44 rounded-lg rotate-[-15deg] border-4 border-orange-300 shadow-lg"
               />
               <img
                 src={house?.login_images[1]}
-                className="h-60 rounded-lg shadow-lg rotate-[-4deg] border-4 border-orange-50"
+                className="h-60 rounded-lg shadow-lg rotate-[-4deg] border-4 border-orange-300"
               />
               <img
                 src={house?.login_images[2]}
-                className="h-40 rounded-lg rotate-[15deg] mt-auto shadow-lg border-4 border-orange-50"
+                className="h-40 rounded-lg rotate-[15deg] mt-auto shadow-lg border-4 border-orange-300"
               />
             </div>
           </div>
