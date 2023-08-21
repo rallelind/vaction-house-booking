@@ -1,6 +1,7 @@
 import useSWR from "swr";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 import { BookingResponseData } from "@/shared.types";
+import { useParams } from "next/navigation";
 
 const fetcher = async (url: string) => {
   try {
@@ -13,9 +14,11 @@ const fetcher = async (url: string) => {
   }
 };
 
-export default function useBookings(houseId: string) {
+export default function useBookings() {
+  const { id } = useParams();
+
   const { data, error, isLoading, mutate } = useSWR<BookingResponseData[]>(
-    `bookings/${houseId}`,
+    `bookings/${id}`,
     fetcher,
     {
       revalidateIfStale: false,

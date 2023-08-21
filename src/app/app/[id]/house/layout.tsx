@@ -23,9 +23,10 @@ export default function ApplicationLayout({
 }) {
   const { session } = useSession();
 
-  const { id } = useParams();
+  //check if route includes your-family
+  const yourFamilyPage = window.location.href.includes("your-family");
 
-  const { house, houseLoading, houseError } = useHouse(id);
+  const { house, houseLoading, houseError } = useHouse();
 
   if (houseLoading) {
     return (
@@ -91,7 +92,7 @@ export default function ApplicationLayout({
             </div>
           </aside>
         </div>
-        <div className="flex w-0 flex-1 p-6 flex-col">{children}</div>
+        <div className="flex w-0 flex-1 flex-col">{children}</div>
       </div>
     </div>
   );

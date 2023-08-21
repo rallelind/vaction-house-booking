@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import UserInvite from "./UserInvite";
 import { Dialog } from "@headlessui/react";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
@@ -31,6 +31,20 @@ const AddFamilyModalContent = ({
         family_name: familyName,
         members: familyMembers,
         house_id: Number(id),
+      }),
+    });
+
+    if (response) {
+      mutateFamilies().then(() => onClose());
+    }
+  };
+
+  const editFamily = async () => {
+    const response = await apiWrapper(`family/${familyToEdit?.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        family_name: familyName,
+        members: familyMembers,
       }),
     });
 
@@ -72,10 +86,14 @@ const AddFamilyModalContent = ({
       <div className="mt-4 flex justify-end">
         <button
           className="p-2 mr-2 flex items-center bg-orange-100 border-solid border rounded-lg border-orange-200 hover:bg-orange-200"
-          onClick={createFamily}
+          onClick={editFamilyMode ? editFamily : createFamily}
         >
-          <PlusIcon className="h-6 mr-2" />
-          <p className="mr-2">Tilføj</p>
+          {editFamilyMode ? (
+            <PencilIcon className="h-6 mr-2" />
+          ) : (
+            <PlusIcon className="h-6 mr-2" />
+          )}
+          <p className="mr-2">{editFamilyMode ? "Ændre" : "Tilføj"}</p>
         </button>
         <button className="bg-gray-50 p-2 border rounded-lg" onClick={onClose}>
           Afbryd

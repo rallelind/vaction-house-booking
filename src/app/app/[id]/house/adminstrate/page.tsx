@@ -28,8 +28,8 @@ export default function HouseAdminstration() {
   );
   const { id } = useParams();
 
-  const { house, houseLoading, mutateHouse } = useHouse(id);
-  const { families, familiesLoading, familiesError } = useFamilies(id);
+  const { house, houseLoading, mutateHouse } = useHouse();
+  const { families, familiesLoading, familiesError } = useFamilies();
 
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
@@ -96,7 +96,7 @@ export default function HouseAdminstration() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full p-6">
       <h1 className="text-3xl mb-4 font-normal">Adminstrer huset</h1>
       <Tab.Group>
         <Tab.List className="bg-orange-50 p-2 rounded-lg">

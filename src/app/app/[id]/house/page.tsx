@@ -1,5 +1,4 @@
 "use client";
-import useBookings from "@/hooks/useBookings";
 import useHouse from "@/hooks/useHouse";
 import { useParams } from "next/navigation";
 import useTodaysBooking from "@/hooks/useTodaysBooking";
@@ -10,9 +9,9 @@ import useUserFamily from "@/hooks/useUserFamily";
 
 export default function Application() {
   const { id } = useParams();
-  const { house, houseError, houseLoading } = useHouse(id);
+  const { house, houseError, houseLoading } = useHouse();
   const { todaysBooking, todaysBookingLoading, todaysBookingError } =
-    useTodaysBooking(id);
+    useTodaysBooking();
 
   const { userFamilyError, userFamily, userFamilyLoading } = useUserFamily(id);
 
@@ -23,7 +22,7 @@ export default function Application() {
   }
 
   return (
-    <div>
+    <div className="p-6">
       <div className="flex">
         <div className="w-full p-4 m-4">
           <div>

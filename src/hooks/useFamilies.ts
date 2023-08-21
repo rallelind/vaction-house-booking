@@ -1,6 +1,7 @@
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 import { Family } from "@/shared.types";
 import useSWR from "swr";
+import { useParams } from "next/navigation";
 
 const fetcher = async (url: string) => {
   try {
@@ -11,9 +12,11 @@ const fetcher = async (url: string) => {
   }
 };
 
-export default function useFamilies(houseId: string) {
+export default function useFamilies() {
+  const { id } = useParams();
+
   const { data, error, isLoading, mutate } = useSWR<Family[]>(
-    `/families/${houseId}`,
+    `/families/${id}`,
     fetcher
   );
 
