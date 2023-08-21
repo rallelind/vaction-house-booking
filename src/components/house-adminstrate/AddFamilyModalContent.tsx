@@ -21,8 +21,8 @@ const AddFamilyModalContent = ({
   const [familyName, setFamilyName] = useState<string>("");
 
   const { id } = useParams();
-  const { mutateFamilies } = useFamilies(id);
-  const { house } = useHouse(id);
+  const { mutateFamilies } = useFamilies();
+  const { house } = useHouse();
 
   const createFamily = async () => {
     const response = await apiWrapper("family", {
@@ -39,13 +39,20 @@ const AddFamilyModalContent = ({
     }
   };
 
+  console.log(familyMembers);
+
   const editFamily = async () => {
+    const body: Partial<Family> = {};
+
+    body.family_name =
+      familyName.length > 0 ? familyName : familyToEdit?.family_name;
+
+    body.members =
+      familyMembers.length > 0 ? familyMembers : familyToEdit?.members;
+
     const response = await apiWrapper(`family/${familyToEdit?.id}`, {
       method: "PUT",
-      body: JSON.stringify({
-        family_name: familyName,
-        members: familyMembers,
-      }),
+      body: JSON.stringify(body),
     });
 
     if (response) {
