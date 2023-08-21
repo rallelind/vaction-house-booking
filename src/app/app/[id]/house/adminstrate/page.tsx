@@ -95,6 +95,8 @@ export default function HouseAdminstration() {
     setEditFamilyMode(false);
   };
 
+  console.log(families)
+
   return (
     <div className="w-full p-6">
       <h1 className="text-3xl mb-4 font-normal">Adminstrer huset</h1>
@@ -160,7 +162,7 @@ export default function HouseAdminstration() {
             </div>
             <hr className="mb-8" />
             <ul>
-              {families?.map((family) => (
+              {families?.map(({ family, users }) => (
                 <li
                   key={family.id}
                   className="border rounded-lg border-gray-200 p-2 mt-4"
@@ -168,11 +170,14 @@ export default function HouseAdminstration() {
                   <div className="flex justify-between items-center">
                     <div className="flex items-center">
                       <div className="flex border-space-x-4">
-                        {family?.members?.map((member) => (
-                          <Avatar key={member} />
+                        {users?.map((user) => (
+                          <Avatar
+                            key={user.id}
+                            avatarUrl={user.profile_image_url}
+                          />
                         ))}
                       </div>
-                      <p className="ml-4 font-medium">{family.family_name}</p>
+                      <p className="ml-4 font-medium">{family?.family_name}</p>
                     </div>
                     <button
                       onClick={() => openEditFamily(family)}

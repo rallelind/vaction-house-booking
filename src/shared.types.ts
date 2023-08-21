@@ -1,4 +1,4 @@
-import type { PublicUserData } from '@clerk/types';
+import type { PublicUserData, UserData } from '@clerk/types';
 
 
 export interface House {
@@ -29,6 +29,11 @@ export interface Family {
   family_name: string;
   members: string[];
   house_id: string;
+}
+
+export interface FamilyResponseData {
+  family: Family;
+  users: PublicUserData[];
 }
 
 

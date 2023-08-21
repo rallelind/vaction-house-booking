@@ -1,11 +1,11 @@
 import useSWR from "swr";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
-import { Family } from "@/shared.types";
+import { Family, FamilyResponseData } from "@/shared.types";
 import { useParams } from "next/navigation";
 
 const fetcher = async (url: string) => {
   try {
-    const response = await apiWrapper<Family>(url, { method: "GET" });
+    const response = await apiWrapper<FamilyResponseData>(url, { method: "GET" });
     return response;
   } catch (error) {
     throw error;
@@ -15,7 +15,7 @@ const fetcher = async (url: string) => {
 export default function useUserFamily() {
   const { id } = useParams();
 
-  const { data, error, mutate, isLoading } = useSWR<Family>(
+  const { data, error, mutate, isLoading } = useSWR<FamilyResponseData>(
     `family/me/${id}`,
     fetcher
   );

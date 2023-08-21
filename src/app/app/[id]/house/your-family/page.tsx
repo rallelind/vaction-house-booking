@@ -16,17 +16,15 @@ export default function YourFamilyPage() {
       </div>
       <div className="p-6">
         <h1 className="text-3xl font-semibold">
-          Familien {userFamily?.family_name}
+          Familien {userFamily?.family.family_name}
         </h1>
         <p className="text-slate-500 text-md">
-          Du er en del af familien {userFamily?.family_name}. Herunder kan du se
-          andre medlemmer af din familie og du vil kunne se opslag fra ture som
-          der kun bliver delt med jeres famile!
+          Du er en del af familien {userFamily?.family.family_name}. Herunder
+          kan du se andre medlemmer af din familie og du vil kunne se opslag fra
+          ture som der kun bliver delt med jeres famile!
         </p>
       </div>
-      <div>
-        
-      </div>
+      <div></div>
     </div>
   );
 }
