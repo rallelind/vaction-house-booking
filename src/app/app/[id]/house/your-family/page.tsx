@@ -9,14 +9,26 @@ export default function YourFamilyPage() {
 
   return (
     <div>
-      <div className="h-60 w-full relative">
-        <img src="/natur_et.jpg" className="h-full w-full object-cover" />
-        <button className="absolute flex bottom-2 items-center border border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg">
-          <PhotoIcon className="h-4 mr-2" />
-          Ændre cover billede
-        </button>
-      </div>
+      {userFamily?.family?.cover_image && (
+        <div className="h-60 w-full relative">
+          <img
+            src={userFamily?.family?.cover_image}
+            className="h-full w-full object-cover"
+          />
+
+          <button className="absolute flex bottom-2 items-center border border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg">
+            <PhotoIcon className="h-4 mr-2" />
+            Ændre cover billede
+          </button>
+        </div>
+      )}
       <div className="p-6">
+        {!userFamily?.family?.cover_image && (
+          <button className="flex items-center border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg hover:bg-slate-100">
+            <PhotoIcon className="h-4 mr-2" />
+            Tilføj cover billede
+          </button>
+        )}
         <h1 className="text-3xl font-semibold">
           Familien {userFamily?.family.family_name}
         </h1>

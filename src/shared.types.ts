@@ -29,6 +29,7 @@ export interface Family {
   family_name: string;
   members: string[];
   house_id: string;
+  cover_image: string;
 }
 
 export interface FamilyResponseData {
