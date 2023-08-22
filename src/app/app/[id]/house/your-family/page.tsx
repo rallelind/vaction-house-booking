@@ -5,6 +5,8 @@ import { PhotoIcon } from "@heroicons/react/24/outline";
 export default function YourFamilyPage() {
   const { userFamily } = useUserFamily();
 
+  console.log(userFamily);
+
   return (
     <div>
       <div className="h-60 w-full relative">
@@ -23,8 +25,26 @@ export default function YourFamilyPage() {
           kan du se andre medlemmer af din familie og du vil kunne se opslag fra
           ture som der kun bliver delt med jeres famile!
         </p>
+        <div className="mt-6">
+          {userFamily?.users.map((user) => (
+            <div
+              key={user.id}
+              className="p-4 rounded-lg bg-orange-50 w-fit flex items-center"
+            >
+              <img
+                className="h-10 w-10 rounded-lg m-auto"
+                src={user.profile_image_url}
+              />
+              <div className="ml-4">
+                <p className="text-xl font-semibold">{user.first_name}</p>
+                <p className="text-sm text-slate-700">
+                  {user.email_addresses[0].email_address}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div></div>
     </div>
   );
 }

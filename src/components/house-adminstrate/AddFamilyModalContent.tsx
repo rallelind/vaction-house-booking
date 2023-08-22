@@ -39,8 +39,6 @@ const AddFamilyModalContent = ({
     }
   };
 
-  console.log(familyMembers);
-
   const editFamily = async () => {
     const body: Partial<Family> = {};
 
