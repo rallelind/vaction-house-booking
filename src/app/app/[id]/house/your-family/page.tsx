@@ -1,14 +1,47 @@
 "use client";
 import useUserFamily from "@/hooks/useUserFamily";
 import { PhotoIcon } from "@heroicons/react/24/outline";
+import { useRef, ChangeEvent } from "react";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 export default function YourFamilyPage() {
-  const { userFamily } = useUserFamily();
+  const { userFamily, mutateUserFamily } = useUserFamily();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  console.log(userFamily);
+  const handleClickFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const onChangeCoverImage = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+
+    if (!file) return;
+
+    const formData = new FormData();
+
+    formData.append("file", file);
+
+    const response = await apiWrapper(
+      `family/${userFamily?.family.id}/cover-image`,
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
+
+    if (response) {
+      mutateUserFamily();
+    }
+  };
 
   return (
     <div>
+      <input
+        type="file"
+        className="hidden"
+        ref={fileInputRef}
+        onChange={onChangeCoverImage}
+      />
       {userFamily?.family?.cover_image && (
         <div className="h-60 w-full relative">
           <img
@@ -16,7 +49,10 @@ export default function YourFamilyPage() {
             className="h-full w-full object-cover"
           />
 
-          <button className="absolute flex bottom-2 items-center border border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg">
+          <button
+            onClick={handleClickFileUpload}
+            className="absolute flex bottom-2 items-center border border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg"
+          >
             <PhotoIcon className="h-4 mr-2" />
             Ændre cover billede
           </button>
@@ -24,7 +60,10 @@ export default function YourFamilyPage() {
       )}
       <div className="p-6">
         {!userFamily?.family?.cover_image && (
-          <button className="flex items-center border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg hover:bg-slate-100">
+          <button
+            onClick={handleClickFileUpload}
+            className="flex items-center border-slate-700 right-2 bg-white pr-2 pl-2 text-sm font-semibold text-slate-700 p-1 rounded-lg hover:bg-slate-100"
+          >
             <PhotoIcon className="h-4 mr-2" />
             Tilføj cover billede
           </button>

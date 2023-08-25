@@ -5,7 +5,9 @@ import { useParams } from "next/navigation";
 
 const fetcher = async (url: string) => {
   try {
-    const response = await apiWrapper<FamilyResponseData>(url, { method: "GET" });
+    const response = await apiWrapper<FamilyResponseData>(url, {
+      method: "GET",
+    });
     return response;
   } catch (error) {
     throw error;

@@ -19,7 +19,12 @@ export default function useFamilies() {
 
   const { data, error, isLoading, mutate } = useSWR<FamilyResponseData[]>(
     `/families/${id}`,
-    fetcher
+    fetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateIfStale: false,
+      shouldRetryOnError: false,
+    }
   );
 
   return {
