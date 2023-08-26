@@ -9,20 +9,19 @@ const Avatar = ({
   height?: string;
   width?: string;
 }) => {
+  const dynamicHeight = height || "10";
+  const dynamicWidth = width || "10";
+
   return (
     <div
-      className={`bg-orange-200 rounded-lg h-${!!height ? height : "10"} w-${
-        !!width ? width : "10"
-      } flex items-center justify-center`}
+      className={`bg-orange-200 rounded-lg object-cover h-${dynamicHeight} w-${dynamicWidth} flex items-center justify-center`}
     >
       {!avatarUrl ? (
-        <UserIcon className="h-6" />
+        <UserIcon className={`h-6`} />
       ) : (
         <img
           alt="avatar"
-          className={`rounded-lg h-${!!height ? height : "10"} w-${
-            !!width ? width : "10"
-          }`}
+          className={`rounded-lg h-${dynamicHeight} object-cover w-${dynamicWidth}`}
           src={avatarUrl}
         />
       )}
