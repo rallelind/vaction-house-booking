@@ -32,15 +32,15 @@ export default function Application() {
             <div className="flex gap-4 justify-center">
               <img
                 src={house?.login_images[0]}
-                className="h-44 rounded-lg rotate-[-15deg] border-4 border-orange-300 shadow-lg"
+                className="h-44 rounded-lg rotate-[-15deg] border-2 border-orange-300 shadow-lg"
               />
               <img
                 src={house?.login_images[1]}
-                className="h-60 rounded-lg shadow-lg rotate-[-4deg] border-4 border-orange-300"
+                className="h-60 rounded-lg shadow-lg rotate-[-4deg] border-2 border-orange-300"
               />
               <img
                 src={house?.login_images[2]}
-                className="h-40 rounded-lg rotate-[15deg] mt-auto shadow-lg border-4 border-orange-300"
+                className="h-40 rounded-lg rotate-[15deg] mt-auto shadow-lg border-2 border-orange-300"
               />
             </div>
           </div>

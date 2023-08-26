@@ -2,6 +2,7 @@
 import UserInvite from "@/components/house-adminstrate/UserInvite";
 import ItemSelect from "@/components/house-adminstrate/ItemSelect";
 import {
+  ArrowUpTrayIcon,
   EnvelopeIcon,
   EnvelopeOpenIcon,
   PencilIcon,
@@ -95,7 +96,7 @@ export default function HouseAdminstration() {
     setEditFamilyMode(false);
   };
 
-  console.log(families)
+  console.log(families);
 
   return (
     <div className="w-full p-6">
@@ -114,34 +115,23 @@ export default function HouseAdminstration() {
         </Tab.List>
         <Tab.Panels>
           <Tab.Panel>
-            <div {...getRootProps()} className="hover:cursor-pointer">
-              <input {...getInputProps()} />
-              <div className="w-full flex items-center font-semibold justify-center text-md mt-4 border-dashed bg-orange-50 border border-orange-300 rounded-lg p-2">
-                <PhotoIcon className="h-8 mr-4" />
-                Upload et billede af huset
-              </div>
-            </div>
             <div
-              className={`grid-cols-3 space-y-2 lg:space-y-0 lg:grid lg:gap-3 lg:grid-rows-3 mt-4`}
+              className={`grid-cols-5 space-y-2 lg:space-y-0 lg:grid lg:gap-3 lg:grid-rows-3 mt-4`}
             >
-              {house?.login_images?.map((img, i) => {
-                if (i % 6 === 0) {
-                  return (
-                    <div
-                      key={img}
-                      className="w-full col-start-1 col-span-2 row-span-2"
-                    >
-                      <img alt="hus billede" src={img} className="rounded-lg" />
-                    </div>
-                  );
-                } else {
-                  return (
-                    <div key={img} className="w-full">
-                      <img alt="hus billede" src={img} className="rounded-lg" />
-                    </div>
-                  );
-                }
-              })}
+              <div {...getRootProps()} className="hover:cursor-pointer h-full">
+                <input {...getInputProps()} />
+                <div className="w-full flex flex-col font-semibold justify-center text-md border-dashed h-full bg-gray-50 border border-gray-300 rounded-lg p-2">
+                  <ArrowUpTrayIcon className="h-8" />
+                  <p className="text-center mt-2 font-normal text-md">Upload et billede af huset</p>
+                </div>
+              </div>
+              {house?.login_images?.map((img, i) => (
+                <img
+                  alt="hus billede"
+                  src={img}
+                  className="rounded-lg h-full object-cover"
+                />
+              ))}
             </div>
           </Tab.Panel>
           <Tab.Panel>
