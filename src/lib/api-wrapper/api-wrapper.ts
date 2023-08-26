@@ -15,8 +15,6 @@ export default async function apiWrapper<T>(
 
     request.headers = reqHeaders;
     
-    console.log(request)
-
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/${endpoint}`,
       request

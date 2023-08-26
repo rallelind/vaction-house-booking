@@ -8,15 +8,16 @@ import {
   Cog6ToothIcon,
   CreditCardIcon,
 } from "@heroicons/react/24/outline";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
 import NavigationItem from "@/components/navigation/NavigationItem";
 import Avatar from "@/components/ui/Avatar";
 import { useSession, useUser } from "@clerk/nextjs";
 import useHouse from "@/hooks/useHouse";
-import { useParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { HousesLoader } from "../../houses/page";
 import { Dialog } from "@headlessui/react";
+import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 
 export default function ApplicationLayout({
   children,
@@ -30,10 +31,18 @@ export default function ApplicationLayout({
     "profile" | "payments"
   >("profile");
 
-  console.log(user);
+  const { push } = useRouter();
+  const searchParams = useSearchParams()
 
-  //check if route includes your-family
-  const yourFamilyPage = window.location.href.includes("your-family");
+  const paymentSessionId = searchParams.get('session_id')
+
+
+  useEffect(() => {
+    if (paymentSessionId) {
+      setSelectedSetting("payments");
+      setProfileOpen(true);
+    }
+  }, [paymentSessionId]);
 
   const { house, houseLoading, houseError } = useHouse();
 
@@ -51,6 +60,19 @@ export default function ApplicationLayout({
   const houseAdmin = house?.house_admins.includes(
     primaryEmailAddress?.emailAddress as string
   );
+
+  const redirectUrl = window.location.href;
+
+  const createSession = async () => {
+    const response = await apiWrapper("payment/card/session", {
+      method: "POST",
+      body: JSON.stringify({ redirectUrl }),
+    });
+
+    if (response) {
+      push(response);
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -181,6 +203,9 @@ export default function ApplicationLayout({
                     ))}
                   </div>
                 </>
+              )}
+              {selectedSetting && (
+                <button onClick={createSession}>Tilføj betalingsmåde</button>
               )}
             </div>
           </Dialog.Panel>
