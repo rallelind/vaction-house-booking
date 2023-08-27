@@ -38,7 +38,8 @@ export default function ApplicationLayout({
   children: ReactNode;
 }) {
   const { session } = useSession();
-  const { paymentMethods, paymentMethodsLoading } = usePaymentMethods();
+  const { paymentMethods, paymentMethodsLoading, mutatePaymentMethods } =
+    usePaymentMethods();
   const [profileOpen, setProfileOpen] = useState(false);
   const [selectedSetting, setSelectedSetting] = useState<
     "profile" | "payments"
@@ -84,6 +85,26 @@ export default function ApplicationLayout({
 
     if (response) {
       push(response);
+    }
+  };
+
+  const setPrimaryPaymentMethod = async (paymentMethodId: string) => {
+    const response = await apiWrapper(`payment/methods/${paymentMethodId}`, {
+      method: "PUT",
+    });
+
+    if (response) {
+      mutatePaymentMethods();
+    }
+  };
+
+  const deletePrimaryPaymentMethod = async (paymentMethodId: string) => {
+    const response = await apiWrapper(`payment/methods/${paymentMethodId}`, {
+      method: "DELETE",
+    });
+
+    if (response) {
+      mutatePaymentMethods();
     }
   };
 
@@ -153,7 +174,6 @@ export default function ApplicationLayout({
                   selectedSetting === "profile" ? "bg-orange-100" : "unset"
                 }`}
               >
-                <UserIcon className="h-4 mr-2" />
                 Profil
               </button>
               <button
@@ -171,7 +191,7 @@ export default function ApplicationLayout({
                   <Dialog.Title className="flex items-center text-xl">
                     <UserIcon className="h-4 mr-4" /> Profil indstillinger
                   </Dialog.Title>
-                  <Dialog.Description className="text-slate-500 mt-2">
+                  <Dialog.Description className="text-slate-500">
                     Adminstrer din profils indstillinger
                   </Dialog.Description>
                   <p className="border-b mt-6 pb-4 text-md font-medium border-gray-200">
@@ -218,47 +238,68 @@ export default function ApplicationLayout({
                 </>
               )}
               {selectedSetting === "payments" && (
-                <div className="flex flex-col gap-4">
-                  {paymentMethods.map((paymentMethod) => (
-                    <div
-                      key={paymentMethod.id}
-                      className="p-2 pr-4 pl-4 bg-orange-50 rounded-lg flex justify-between"
-                    >
-                      <div className="flex items-start">
-                        <CardIcon cardType={paymentMethod.card.brand} />
-                        <div className="ml-4">
-                          <p className="capitalize inline text-sm font-medium">
-                            {paymentMethod.card.brand}{" "}
-                          </p>
-                          <p className="inline text-sm font-medium">
-                            {` slutter på ${paymentMethod.card.last4}`}
-                          </p>
-                          <p className="text-sm text-slate-700">
-                            Udløber {paymentMethod.card.exp_month}/
-                            {paymentMethod.card.exp_year}
-                          </p>
+                <>
+                  <Dialog.Title className="flex items-center text-xl">
+                    Betaling metoder
+                  </Dialog.Title>
+                  <Dialog.Description className="text-slate-500 mb-4">
+                    Adminstrer din profils betalings metoder
+                  </Dialog.Description>
+                  <div className="flex flex-col gap-4">
+                    {paymentMethods.map((paymentMethod) => (
+                      <div
+                        key={paymentMethod.id}
+                        className="p-2 pr-4 pl-4 bg-orange-50 rounded-lg flex justify-between"
+                      >
+                        <div className="flex items-start">
+                          <CardIcon cardType={paymentMethod.card.brand} />
+                          <div className="ml-4">
+                            <p className="capitalize inline text-sm font-medium">
+                              {paymentMethod.card.brand}{" "}
+                            </p>
+                            <p className="inline text-sm font-medium">
+                              {` slutter på ${paymentMethod.card.last4}`}
+                            </p>
+                            <p className="text-sm text-slate-700">
+                              Udløber {paymentMethod.card.exp_month}/
+                              {paymentMethod.card.exp_year}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center">
+                          {paymentMethod.customer.invoice_settings
+                            .default_payment_method.id === paymentMethod.id ? (
+                            <p className="bg-orange-200 rounded-lg p-1 pr-2 pl-2 text-sm font-medium">
+                              Primære
+                            </p>
+                          ) : (
+                            <button
+                              onClick={() =>
+                                setPrimaryPaymentMethod(paymentMethod.id)
+                              }
+                              className="text-orange-500 font-medium text-sm"
+                            >
+                              Brug som primær
+                            </button>
+                          )}
+                          <button
+                            onClick={() =>
+                              deletePrimaryPaymentMethod(paymentMethod.id)
+                            }
+                          >
+                            <TrashIcon className="h-6 text-red-800 ml-4" />
+                          </button>
                         </div>
                       </div>
-                      <div className="flex items-center">
-                        {paymentMethod.customer.invoice_settings
-                          .default_payment_method.id === paymentMethod.id ? (
-                          <p className="bg-orange-200 rounded-lg p-1 pr-2 pl-2 text-sm font-medium">
-                            Primære
-                          </p>
-                        ) : <button className="text-orange-500 font-medium text-sm">Brug som primær</button>}
-                        <button>
-                          <TrashIcon className="h-6 text-red-800 ml-2" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  <button
-                    className="bg-orange-400 w-fit m-auto p-1 pr-4 pl-4 border-orange-500 border rounded-lg shadow-md font-medium text-white text-sm"
-                    onClick={createSession}
-                  >
-                    Tilføj betalingsmetode
-                  </button>
-                </div>
+                    ))}
+                    <button
+                      className="bg-orange-400 w-fit m-auto p-1 pr-4 pl-4 border-orange-500 border rounded-lg shadow-md font-medium text-white text-sm"
+                      onClick={createSession}
+                    >
+                      Tilføj betalingsmetode
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           </Dialog.Panel>
