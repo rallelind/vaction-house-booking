@@ -7,6 +7,7 @@ import {
   UserIcon,
   Cog6ToothIcon,
   CreditCardIcon,
+  TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ReactNode, useEffect, useState } from "react";
 import Link from "next/link";
@@ -18,6 +19,18 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { HousesLoader } from "../../houses/page";
 import { Dialog } from "@headlessui/react";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
+import usePaymentMethods from "@/hooks/payments/usePaymentMethods";
+import { FaCcVisa, FaCcMastercard } from "react-icons/fa";
+
+const CardIcon = ({ cardType }) => {
+  if (cardType === "visa") {
+    return <FaCcVisa fontSize="30px" />;
+  }
+
+  if (cardType === "mastercard") {
+    return <FaCcMastercard fontSize="30px" />;
+  }
+};
 
 export default function ApplicationLayout({
   children,
@@ -25,17 +38,17 @@ export default function ApplicationLayout({
   children: ReactNode;
 }) {
   const { session } = useSession();
-  const { user } = useUser();
+  const { paymentMethods, paymentMethodsLoading } = usePaymentMethods();
   const [profileOpen, setProfileOpen] = useState(false);
   const [selectedSetting, setSelectedSetting] = useState<
     "profile" | "payments"
   >("profile");
 
   const { push } = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
-  const paymentSessionId = searchParams.get('session_id')
-
+  console.log(paymentMethods);
+  const paymentSessionId = searchParams.get("session_id");
 
   useEffect(() => {
     if (paymentSessionId) {
@@ -46,7 +59,7 @@ export default function ApplicationLayout({
 
   const { house, houseLoading, houseError } = useHouse();
 
-  if (houseLoading) {
+  if (houseLoading || paymentMethodsLoading) {
     return (
       <div className="min-h-screen mt-auto flex">
         <HousesLoader />
@@ -136,7 +149,7 @@ export default function ApplicationLayout({
             <div className="bg-orange-50 h-full flex flex-col rounded-tl-lg rounded-bl-lg p-4">
               <button
                 onClick={() => setSelectedSetting("profile")}
-                className={`mt-4 text-left text-sm font-medium rounded-lg flex items-center p-1 ${
+                className={`mt-4 text-left text-sm font-medium rounded-lg flex items-center p-1 pr-2 ${
                   selectedSetting === "profile" ? "bg-orange-100" : "unset"
                 }`}
               >
@@ -145,11 +158,11 @@ export default function ApplicationLayout({
               </button>
               <button
                 onClick={() => setSelectedSetting("payments")}
-                className={`mt-4 text-left text-sm font-medium flex items-center rounded-lg p-1 ${
+                className={`mt-4 text-left text-sm font-medium flex items-center rounded-lg p-1 pr-2 ${
                   selectedSetting === "payments" ? "bg-orange-100" : "unset"
                 }`}
               >
-                <CreditCardIcon className="h-4 mr-2" /> Betalinger
+                <CreditCardIcon className="h-4 mr-2" /> Betaling
               </button>
             </div>
             <div className="p-6 w-full">
@@ -204,8 +217,48 @@ export default function ApplicationLayout({
                   </div>
                 </>
               )}
-              {selectedSetting && (
-                <button onClick={createSession}>Tilføj betalingsmåde</button>
+              {selectedSetting === "payments" && (
+                <div className="flex flex-col gap-4">
+                  {paymentMethods.map((paymentMethod) => (
+                    <div
+                      key={paymentMethod.id}
+                      className="p-2 pr-4 pl-4 bg-orange-50 rounded-lg flex justify-between"
+                    >
+                      <div className="flex items-start">
+                        <CardIcon cardType={paymentMethod.card.brand} />
+                        <div className="ml-4">
+                          <p className="capitalize inline text-sm font-medium">
+                            {paymentMethod.card.brand}{" "}
+                          </p>
+                          <p className="inline text-sm font-medium">
+                            {` slutter på ${paymentMethod.card.last4}`}
+                          </p>
+                          <p className="text-sm text-slate-700">
+                            Udløber {paymentMethod.card.exp_month}/
+                            {paymentMethod.card.exp_year}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center">
+                        {paymentMethod.customer.invoice_settings
+                          .default_payment_method.id === paymentMethod.id ? (
+                          <p className="bg-orange-200 rounded-lg p-1 pr-2 pl-2 text-sm font-medium">
+                            Primære
+                          </p>
+                        ) : <button className="text-orange-500 font-medium text-sm">Brug som primær</button>}
+                        <button>
+                          <TrashIcon className="h-6 text-red-800 ml-2" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                  <button
+                    className="bg-orange-400 w-fit m-auto p-1 pr-4 pl-4 border-orange-500 border rounded-lg shadow-md font-medium text-white text-sm"
+                    onClick={createSession}
+                  >
+                    Tilføj betalingsmetode
+                  </button>
+                </div>
               )}
             </div>
           </Dialog.Panel>
