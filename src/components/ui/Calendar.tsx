@@ -26,7 +26,7 @@ import {
   dayBooked,
   highlightBooking,
 } from "./calendar-helper-functions";
-import useBookings from "@/hooks/useBookings";
+import useBookings from "@/hooks/bookings/useBookings";
 import { useParams } from "next/navigation";
 
 function classNames(...classes: any) {

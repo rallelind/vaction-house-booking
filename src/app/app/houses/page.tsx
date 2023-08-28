@@ -1,6 +1,6 @@
 "use client";
 import { HomeIcon, MapPinIcon } from "@heroicons/react/24/outline";
-import useHouses from "@/hooks/useHouses";
+import useHouses from "@/hooks/houses/useHouses";
 import { useRouter } from "next/navigation";
 
 export const HousesLoader = () => {

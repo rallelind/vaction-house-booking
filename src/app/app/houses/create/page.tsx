@@ -6,7 +6,7 @@ import { MapPinIcon, HomeIcon } from "@heroicons/react/24/outline";
 import UserInvite from "@/components/house-adminstrate/UserInvite";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 import { useRouter } from "next/navigation";
-import useHouses from "@/hooks/useHouses";
+import useHouses from "@/hooks/houses/useHouses";
 
 export default function HouseCreation() {
   const [inputQuery, setInputQuery] = useState("");

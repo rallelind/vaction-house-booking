@@ -1,5 +1,5 @@
 "use client";
-import useUserFamily from "@/hooks/useUserFamily";
+import useUserFamily from "@/hooks/families/useUserFamily";
 import { PhotoIcon } from "@heroicons/react/24/outline";
 import { useRef, ChangeEvent } from "react";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";

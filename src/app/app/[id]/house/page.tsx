@@ -1,11 +1,11 @@
 "use client";
-import useHouse from "@/hooks/useHouse";
+import useHouse from "@/hooks/houses/useHouse";
 import { useParams } from "next/navigation";
-import useTodaysBooking from "@/hooks/useTodaysBooking";
+import useTodaysBooking from "@/hooks/bookings/useTodaysBooking";
 import Avatar from "@/components/ui/Avatar";
 import format from "date-fns/format";
 import { useRouter } from "next/navigation";
-import useUserFamily from "@/hooks/useUserFamily";
+import useUserFamily from "@/hooks/families/useUserFamily";
 
 export default function Application() {
   const { id } = useParams();

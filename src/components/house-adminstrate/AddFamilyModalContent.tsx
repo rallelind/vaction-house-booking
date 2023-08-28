@@ -3,9 +3,9 @@ import { PencilIcon, PlusIcon } from "@heroicons/react/24/outline";
 import UserInvite from "./UserInvite";
 import { Dialog } from "@headlessui/react";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
-import useFamilies from "@/hooks/useFamilies";
+import useFamilies from "@/hooks/families/useFamilies";
 import { useParams } from "next/navigation";
-import useHouse from "@/hooks/useHouse";
+import useHouse from "@/hooks/houses/useHouse";
 import { Family } from "@/shared.types";
 
 const AddFamilyModalContent = ({

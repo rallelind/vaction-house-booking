@@ -14,7 +14,7 @@ import Link from "next/link";
 import NavigationItem from "@/components/navigation/NavigationItem";
 import Avatar from "@/components/ui/Avatar";
 import { useSession, useUser } from "@clerk/nextjs";
-import useHouse from "@/hooks/useHouse";
+import useHouse from "@/hooks/houses/useHouse";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { HousesLoader } from "../../houses/page";
 import { Dialog } from "@headlessui/react";
@@ -125,11 +125,6 @@ export default function ApplicationLayout({
                 />
               )}
               <NavigationItem
-                href={`/app/${house?.id}/house/bookings`}
-                icon={<HomeModernIcon className="h-6 lg:mr-3" />}
-                text="Bookinger"
-              />
-              <NavigationItem
                 href={`/app/${house?.id}/house/trips`}
                 icon={<MapIcon className="h-6 lg:mr-3" />}
                 text="Dine ture"
@@ -174,7 +169,7 @@ export default function ApplicationLayout({
                   selectedSetting === "profile" ? "bg-orange-100" : "unset"
                 }`}
               >
-                Profil
+                <UserIcon className="h-4 mr-2" /> Profil
               </button>
               <button
                 onClick={() => setSelectedSetting("payments")}
@@ -189,7 +184,7 @@ export default function ApplicationLayout({
               {selectedSetting === "profile" && (
                 <>
                   <Dialog.Title className="flex items-center text-xl">
-                    <UserIcon className="h-4 mr-4" /> Profil indstillinger
+                    Profil indstillinger
                   </Dialog.Title>
                   <Dialog.Description className="text-slate-500">
                     Adminstrer din profils indstillinger

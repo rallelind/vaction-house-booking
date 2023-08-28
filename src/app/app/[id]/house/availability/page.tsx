@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Calendar from "@/components/ui/Calendar";
-import useBookings from "@/hooks/useBookings";
+import useBookings from "@/hooks/bookings/useBookings";
 import apiWrapper from "@/lib/api-wrapper/api-wrapper";
 import startOfToday from "date-fns/startOfToday";
 import { useParams } from "next/navigation";
