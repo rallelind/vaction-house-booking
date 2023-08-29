@@ -11,13 +11,15 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 
 export default function Application() {
   const { id } = useParams();
-  const { bookings, bookingsLoading, mutateBookings } = useBookings(id);
+  const { bookings, bookingsLoading, mutateBookings } = useBookings();
 
   const [hoveredBooking, setHoveredBooking] = useState(null);
   const [dates, setDates] = useState({
     startDate: null,
     endDate: null,
   });
+
+  console.log(dates);
 
   useEffect(() => {
     let today = startOfToday();
@@ -57,6 +59,9 @@ export default function Application() {
       end_date: dates.endDate,
       house_id: Number(id),
     };
+
+    // When using JSON.stringify on date the date becomes one day earlier because of timezone
+    console.log(JSON.stringify(body));
 
     const createdBooking = await apiWrapper("booking", {
       method: "POST",
