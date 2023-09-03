@@ -9,12 +9,17 @@ import { isSameDay, isWithinInterval, format } from "date-fns";
 import Avatar from "@/components/ui/Avatar";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 
+interface Dates {
+  startDate: Date | null;
+  endDate: Date | null;
+}
+
 export default function Application() {
   const { id } = useParams();
   const { bookings, bookingsLoading, mutateBookings } = useBookings();
 
   const [hoveredBooking, setHoveredBooking] = useState(null);
-  const [dates, setDates] = useState({
+  const [dates, setDates] = useState<Dates>({
     startDate: null,
     endDate: null,
   });
@@ -53,15 +58,25 @@ export default function Application() {
     return <div>Loading...</div>;
   }
 
+  const formatBookingDate = (date: Date) => {
+    // When using JSON.stringify on date the date becomes one day earlier because of timezone, this keeps the timezone
+    var tzoffset = date.getTimezoneOffset() * 60000; //offset in milliseconds
+    var localISOTime = new Date(date.getTime() - tzoffset).toISOString();
+
+    return localISOTime;
+  };
+
   const submitBooking = async () => {
+    if (!dates.startDate || !dates.endDate) return;
+
+    const formattedStartDate = formatBookingDate(dates.startDate);
+    const formattedEndDate = formatBookingDate(dates.endDate);
+
     const body = {
-      start_date: dates.startDate,
-      end_date: dates.endDate,
+      start_date: formattedStartDate,
+      end_date: formattedEndDate,
       house_id: Number(id),
     };
-
-    // When using JSON.stringify on date the date becomes one day earlier because of timezone
-    console.log(JSON.stringify(body));
 
     const createdBooking = await apiWrapper("booking", {
       method: "POST",
