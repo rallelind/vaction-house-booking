@@ -18,7 +18,7 @@ export default function useUserFamily() {
   const { id } = useParams();
 
   const { data, error, mutate, isLoading } = useSWR<FamilyResponseData>(
-    `family/me/${id}`,
+    `user/family/${id}`,
     fetcher
   );
 

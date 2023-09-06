@@ -18,7 +18,7 @@ export default function useBookings() {
   const { id } = useParams();
 
   const { data, error, isLoading, mutate } = useSWR<BookingResponseData[]>(
-    `booking/bookings/${id}`,
+    `booking/${id}/bookings`,
     fetcher,
     {
       revalidateIfStale: false,

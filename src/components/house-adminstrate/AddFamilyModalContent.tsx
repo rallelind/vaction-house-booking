@@ -25,7 +25,7 @@ const AddFamilyModalContent = ({
   const { house } = useHouse();
 
   const createFamily = async () => {
-    const response = await apiWrapper("family", {
+    const response = await apiWrapper(`house/families/${id}`, {
       method: "POST",
       body: JSON.stringify({
         family_name: familyName,

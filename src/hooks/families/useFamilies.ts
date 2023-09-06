@@ -18,7 +18,7 @@ export default function useFamilies() {
   const { id } = useParams();
 
   const { data, error, isLoading, mutate } = useSWR<FamilyResponseData[]>(
-    `/families/${id}`,
+    `house/families/${id}`,
     fetcher,
     {
       revalidateOnFocus: false,

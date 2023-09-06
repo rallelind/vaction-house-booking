@@ -24,8 +24,6 @@ export default function Application() {
     endDate: null,
   });
 
-  console.log(dates);
-
   useEffect(() => {
     let today = startOfToday();
 
@@ -78,7 +76,7 @@ export default function Application() {
       house_id: Number(id),
     };
 
-    const createdBooking = await apiWrapper("booking", {
+    const createdBooking = await apiWrapper(`booking/${id}`, {
       method: "POST",
       body: JSON.stringify(body),
     });
