@@ -60,8 +60,7 @@ const CalendarDays = ({
 
   let today = startOfToday();
 
-  const { id } = useParams();
-  const { bookings, bookingsError, bookingsLoading } = useBookings(id);
+  const { bookings } = useBookings();
 
   const { startDate, endDate } = dates;
 
@@ -82,6 +81,22 @@ const CalendarDays = ({
       onChange({ startDate: day, endDate });
     }
   };
+
+  // When the user picks a start date the end date needs to be the next booking date from the start date
+  // Thereby when the user picks a date we should get the two bookins that is before and after the selected date
+  const nextBooking = bookings?.find(
+    ({ booking }) => new Date(booking.start_date) > startDate
+  );
+
+  const nextBookingIndex =
+    bookings?.findIndex(
+      ({ booking }) => booking.id === nextBooking?.booking.id
+    ) || 0;
+
+  const previousBooking = bookings?.[nextBookingIndex - 1];
+
+  const previousBookingDate = previousBooking?.booking.start_date;
+  const nextBookingDate = nextBooking?.booking.start_date;
 
   return (
     <>
@@ -152,10 +167,19 @@ const CalendarDays = ({
                   src={findUserBooking(day, bookings)?.user.profile_image_url}
                 />
               </div>
-            )} 
+            )}
             <button
               type="button"
-              disabled={dayBooked(day, bookings) || isBefore(day, today)}
+              disabled={
+                dayBooked(day, bookings) ||
+                isBefore(day, today) ||
+                (nextBookingDate &&
+                  startDate &&
+                  isAfter(day, new Date(nextBookingDate))) ||
+                (previousBookingDate &&
+                  startDate &&
+                  isBefore(day, new Date(previousBookingDate)))
+              }
               onClick={() => handleSelectedDay(day)}
               className={classNames(
                 isEqual(day, startDate) &&
