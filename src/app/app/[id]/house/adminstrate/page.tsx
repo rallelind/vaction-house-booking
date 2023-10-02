@@ -6,7 +6,6 @@ import {
   EnvelopeIcon,
   EnvelopeOpenIcon,
   PencilIcon,
-  PhotoIcon,
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { Dialog } from "@headlessui/react";
@@ -122,7 +121,9 @@ export default function HouseAdminstration() {
                 <input {...getInputProps()} />
                 <div className="w-full flex flex-col font-semibold justify-center text-md border-dashed h-full bg-gray-50 border border-gray-300 rounded-lg p-2">
                   <ArrowUpTrayIcon className="h-8" />
-                  <p className="text-center mt-2 font-normal text-md">Upload et billede af huset</p>
+                  <p className="text-center mt-2 font-normal text-md">
+                    Upload et billede af huset
+                  </p>
                 </div>
               </div>
               {house?.login_images?.map((img, i) => (

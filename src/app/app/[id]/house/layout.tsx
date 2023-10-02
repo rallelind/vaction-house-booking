@@ -288,7 +288,7 @@ export default function ApplicationLayout({
                       </div>
                     ))}
                     <button
-                      className="bg-orange-400 w-fit m-auto p-1 pr-4 pl-4 border-orange-500 border rounded-lg shadow-md font-medium text-white text-sm"
+                      className="p-2 bg-slate-800 w-fit m-auto font-semibold pl-4 pr-4 text-sm rounded-full text-white"
                       onClick={createSession}
                     >
                       Tilføj betalingsmetode
